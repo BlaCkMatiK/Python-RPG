@@ -91,7 +91,6 @@ class Character:
         self.decrease_health(wounds)
         self.show_health()
 
-
 def create_character():
     a_dice=Dice(6)
     name = input("Le nom de votre personnage ? :  ")
@@ -107,32 +106,45 @@ def create_character():
     character.name = name
     print("Hello, " + Character.get_name(character) + "!")
     
-    points_de_competences = 50
-
-    print("Vous avez", points_de_competences,
-          "points de compétences à attribuer.")
+    points_de_competences = 10
+    print("Vous avez", points_de_competences, "points de compétences à attribuer.")
 
     while points_de_competences > 0:
         print("Statistiques actuelles :")
         print("Points de vie :", character.max_health)
         print("Attaque :", character.attack_value)
         print("Défense :", character.defense_value)
-        n_hp = int(input("Combien de points d'HP ? : "))
+        
+        # Request input for HP points
+        max_hp_points = min(points_de_competences, 10)  # Set maximum number of points to 10 or remaining points
+        n_hp = int(input(f"Combien de points d'HP ? (maximum {max_hp_points}): "))
+        while n_hp > max_hp_points:
+            n_hp = int(input(f"Combien de points d'HP ? (maximum {max_hp_points}): "))
         character.max_health += n_hp
         character.regenerate()
         points_de_competences -= n_hp
+        
         if points_de_competences > 0:
-            n_atk = int(input("Combien de points d'ATK ? : "))
+            # Request input for ATK points
+            max_atk_points = min(points_de_competences, 10)  # Set maximum number of points to 10 or remaining points
+            n_atk = int(input(f"Combien de points d'ATK ? (maximum {max_atk_points}): "))
+            while n_atk > max_atk_points:
+                n_atk = int(input(f"Combien de points d'ATK ? (maximum {max_atk_points}): "))
             character.attack_value += n_atk
             points_de_competences -= n_atk
-            if points_de_competences > 0:
-                n_def = int(input("Combien de points de DEF ? : "))
-                character.defense_value += n_def
-                points_de_competences -= n_def
-    print(character)
-    print("%s entre dans une cave sombre, à la recherche de l'aventure..." % character.name)
+            
+        if points_de_competences > 0:
+            # Request input for DEF points
+            max_def_points = min(points_de_competences, 10)  # Set maximum number of points to 10 or remaining points
+            n_def = int(input(f"Combien de points de DEF ? (maximum {max_def_points}): "))
+            while n_def > max_def_points:
+                n_def = int(input(f"Combien de points de DEF ? (maximum {max_def_points}): "))
+            character.defense_value += n_def
+            points_de_competences -= n_def
+        print(character)
+        print("%s entre dans une cave sombre, à la recherche de l'aventure..." % character.name)
 
-    return character
+        return character
 
 def stats(character):
     print("TEST")
@@ -161,7 +173,6 @@ class Thief(Character):
     def compute_damages(self, roll, target):
         print(f"Bonus : Backstab ! (+{target.get_defense()} damages)")
         return super().compute_damages(roll, target) + target.get_defense()
-
 
 if __name__ == "__main__":
     a_dice = Dice(6)
