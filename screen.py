@@ -114,6 +114,6 @@ def test():
     # os.system('cls')
 
 def over():
-    tprint("GAME OVER !!")
+    print("GAME OVER !!")
     sys.stdout.flush()
     input()

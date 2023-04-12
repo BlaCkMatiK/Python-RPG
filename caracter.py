@@ -1,7 +1,7 @@
 import os
 import random
 import time
-from rich import *
+from rich import print
 from random import *
 
 from dice import Dice, RiggedDice
@@ -28,7 +28,7 @@ class Character:
         self.potions = []
 
     def __str__(self):
-        return f"{self.name} le {type(self).type} descend dans le donjon avec {self.max_health}hp, {self.attack_value} atk et {self.defense_value} def\n"
+        return f"{self.name} le {type(self).type} démmare le combat avec {self.max_health}hp ({self.attack_value} atk / {self.defense_value} def)\n"
 
     def regenerate(self):
         self.health = self.max_health
@@ -51,7 +51,7 @@ class Character:
             print(emoji,end="")
         for i in range(self.health, self.max_health):
             print("🖤", end="")
-        print(f"] ({self.health} / {self.max_health})")
+        print("]")
 
     # def show_health(self):
     #     missing_health = self.max_health - self.health
@@ -92,69 +92,54 @@ class Character:
         self.show_health()
 
 def create_character():
-    name = input("Le nom de votre personnage ? \n: ")
-    valid_inputs = ["1", "2", "3", "4"]
-    os.system("cls")
-    
-    while True:
-        try:
-            classe = input(f"{name}, choisissez votre classe (hp / atk / def / vit): \n1. Warrior (20 / 8 / 5 / 2) \n2. Mage (15 / 10 / 10 / 2) \n3. Thief (10 / 10 / 10 / 10) \n4. Looser (1 / 1 / 1 / 1) \n \n: ")
-            if str(classe) not in valid_inputs:
-                raise ValueError
-            break
-        except ValueError:
-            os.system("cls")
-            print("Veuillez saisir une valeur entre 1 et 4 !\n")
-
+    name = input("Le nom de votre personnage ? :  ")
+    classe = input("Choisis ta classe (hp / atk / def / vit): \n 1. Warrior (20 / 8 / 5 / 2) \n 2. Mage (15 / 10 / 10 / 2) \n 3. Thief (10 / 10 / 10 / 10) \n:")
+    # while classe == 0 or (classe != 1 and classe != 2) :
+    #     classe = input("Choisis ta classe : \n 1. Warrior \n 2. Mage : ")
     if classe == "1":
         character = Warrior(20, 8, 5, 2, a_dice)
     elif classe == "2":
         character = Mage(15, 10, 10, 2, a_dice)
     elif classe == "3":
         character = Thief(10,10,10,10, a_dice)
-    elif classe == "4":
-        character = Looser(1,1,1,1, a_dice)
     character.name = name
+    print("Hello, " + Character.get_name(character) + "!")
     
-    os.system("cls")
-    print("Bonjour " + Character.get_name(character) + " le " + Character.get_type(character) + "!\n")
-    
-    p_caracteristiques = 10
-    print("Vous avez", p_caracteristiques, "points de caractéristiques à attribuer.\n")
+    points_de_competences = 10
+    print("Vous avez", points_de_competences, "points de compétences à attribuer.")
 
-    while p_caracteristiques > 0:
+    while points_de_competences > 0:
         print("Statistiques actuelles :")
-        print(" Points de vie :", character.max_health)
-        print(" Attaque :", character.attack_value)
-        print(" Défense :", character.defense_value)
+        print("Points de vie :", character.max_health)
+        print("Attaque :", character.attack_value)
+        print("Défense :", character.defense_value)
         
         # Request input for HP points
-        max_hp_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
-        n_hp = int(input(f"\nCombien de points d'HP ? (maximum {max_hp_points}): "))
+        max_hp_points = min(points_de_competences, 10)  # Set maximum number of points to 10 or remaining points
+        n_hp = int(input(f"Combien de points d'HP ? (maximum {max_hp_points}): "))
         while n_hp > max_hp_points:
-            n_hp = int(input(f"\nCombien de points d'HP ? (maximum {max_hp_points}): "))
+            n_hp = int(input(f"Combien de points d'HP ? (maximum {max_hp_points}): "))
         character.max_health += n_hp
         character.regenerate()
-        p_caracteristiques -= n_hp
+        points_de_competences -= n_hp
         
-        if p_caracteristiques > 0:
+        if points_de_competences > 0:
             # Request input for ATK points
-            max_atk_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
+            max_atk_points = min(points_de_competences, 10)  # Set maximum number of points to 10 or remaining points
             n_atk = int(input(f"Combien de points d'ATK ? (maximum {max_atk_points}): "))
             while n_atk > max_atk_points:
                 n_atk = int(input(f"Combien de points d'ATK ? (maximum {max_atk_points}): "))
             character.attack_value += n_atk
-            p_caracteristiques -= n_atk
+            points_de_competences -= n_atk
             
-        if p_caracteristiques > 0:
+        if points_de_competences > 0:
             # Request input for DEF points
-            max_def_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
+            max_def_points = min(points_de_competences, 10)  # Set maximum number of points to 10 or remaining points
             n_def = int(input(f"Combien de points de DEF ? (maximum {max_def_points}): "))
             while n_def > max_def_points:
                 n_def = int(input(f"Combien de points de DEF ? (maximum {max_def_points}): "))
             character.defense_value += n_def
-            p_caracteristiques -= n_def
-        os.system("cls")
+            points_de_competences -= n_def
         print(character)
         print("%s entre dans une cave sombre, à la recherche de l'aventure..." % character.name)
 
@@ -185,9 +170,6 @@ class Thief(Character):
         print(f"Bonus : Backstab ! (+{target.get_defense()} damages)")
         return super().compute_damages(roll, target) + target.get_defense()
 
-class Looser(Character):
-    type = "looser"
-
 class Enemy(Character):
     type = "enemy"
     def __init__(self, name, max_health, attack, defense, vitesse, dice):
@@ -213,6 +195,7 @@ class DeathbringerScorpion(Enemy):
 class AbyssalHorror(Enemy):
     def __init__(self):
         super().__init__("AbyssalHorror",30, 6, 5, 7, a_dice)
+
 
 if __name__ == "__main__":
     a_dice = Dice(6)
