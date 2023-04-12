@@ -6,6 +6,7 @@ from random import *
 
 from dice import Dice, RiggedDice
 
+a_dice=Dice(6)
 
 class Character:
     type = "character"
@@ -75,8 +76,7 @@ class Character:
 
             roll = self.dice.roll()
             damages = self.compute_damages(roll, target)
-            print(
-                f"⚔️ [red]{self.get_type()} {self.name} attaque[/red] avec {damages} dommages (attack: {self.attack_value} + dé {roll})")
+            print(f"⚔️ [red]{self.get_name()} attaque[/red] avec {damages} dommages (attack: {self.attack_value} + dé {roll})")
             target.defend(damages)
 
     def compute_defense(self, roll, damages):
@@ -85,14 +85,13 @@ class Character:
     def defend(self, damages):
         roll = self.dice.roll()
         wounds = self.compute_defense(roll, damages)
-        print(f"🛡️ [blue]{self.get_type()} {self.name} se défend[/blue] contre {damages} dommages et en prends {wounds}. ({damages} dommages - défense {self.defense_value} - dé {roll})")
+        print(f"🛡️ [blue]{self.get_name()} se défend[/blue] contre {damages} dommages et en prends {wounds}. ({damages} dommages - défense {self.defense_value} - dé {roll})")
         if wounds < 0:
             wounds = 0
         self.decrease_health(wounds)
         self.show_health()
 
 def create_character():
-    a_dice=Dice(6)
     name = input("Le nom de votre personnage ? :  ")
     classe = input("Choisis ta classe (hp / atk / def / vit): \n 1. Warrior (20 / 8 / 5 / 2) \n 2. Mage (15 / 10 / 10 / 2) \n 3. Thief (10 / 10 / 10 / 10) \n:")
     # while classe == 0 or (classe != 1 and classe != 2) :
@@ -164,15 +163,39 @@ class Mage(Character):
         print("Bonus : Magic armor ! (-3 wournds)")
         return super().compute_defense(roll, damages) - 3
 
-class Enemy(Character):
-    type = "Ennemy"
-
 class Thief(Character):
     type = "Thief"
 
     def compute_damages(self, roll, target):
         print(f"Bonus : Backstab ! (+{target.get_defense()} damages)")
         return super().compute_damages(roll, target) + target.get_defense()
+
+class Enemy(Character):
+    type = "enemy"
+    def __init__(self, name, max_health, attack, defense, vitesse, dice):
+        super().__init__(max_health, attack, defense, vitesse, dice)
+        self.name = name
+
+class CrawlingVermin(Enemy):
+    def __init__(self):
+        super().__init__("CrawlingVermin",10, 2, 1, 3, a_dice)
+
+class ShadowStalker(Enemy):
+    def __init__(self):
+        super().__init__("ShadowStalker",15, 3, 2, 4, a_dice)
+
+class VenomousSerpent(Enemy):
+    def __init__(self):
+        super().__init__("VenomousSerpent",20, 4, 3, 5, a_dice)
+
+class DeathbringerScorpion(Enemy):
+    def __init__(self):
+        super().__init__("DeathbringerScorpion",25, 5, 4, 6, a_dice)
+
+class AbyssalHorror(Enemy):
+    def __init__(self):
+        super().__init__("AbyssalHorror",30, 6, 5, 7, a_dice)
+
 
 if __name__ == "__main__":
     a_dice = Dice(6)

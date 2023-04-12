@@ -13,7 +13,7 @@ def explore(self):
         print("%s explore un passage étroit." % self.name)
         res = randint(1, 10)
         if res <= 5:
-            print("%s rencontre %s!" % (self.name, 'un goblin !'))
+            print("%s rencontre %s" % (self.name, 'un ennemi !'))
             print("Veux tu te battre ou tenter de fuire? ('combat' ou 'fuite')")
             self.status = "combat"
         elif res > 5 and res < 8:
@@ -47,10 +47,15 @@ def fuite(self):
     else:
         print("Mais vous n'êtes pas en combat")
 
+def random_enemy():
+    enemies = [CrawlingVermin(), ShadowStalker(), VenomousSerpent(), DeathbringerScorpion(), AbyssalHorror()]
+    return random.choice(enemies)
+
 def combat(self):
     if self.status == "combat":
         time.sleep(1)
-        goblin = Enemy(30, 6, 2, 1, a_dice)
+        goblin = random_enemy()
+        print(f"C'est un {goblin.name} ! \n")
         while (self.is_alive() and goblin.is_alive()):
             if self.vitesse >= goblin.vitesse:
                 self.attack(goblin)
@@ -93,7 +98,7 @@ def ouvrir_coffre(self):
             ajouter_potion(self, item_choisi)
         else:
             quantite_or = random.randint(1, 10)
-            self.ajouter_or(quantite_or)
+            ajouter_or(self, quantite_or)
 
 def ajouter_arme(self, arme):
         """ Ajoute une arme à l'inventaire du personnage """
@@ -140,12 +145,15 @@ def choose_event(player):
                 print("%s ne comprend pas." % player.name)
     print("Tu es mort ^^")
 
+def over_e(player):
+    over()
+
 Commands = {
     # 'quit': Player.quit,
     # 'help': Player.help,
     # 'status': Player.status,
     # 'rest': Player.rest,
-    #'over': over,
+    'over': over_e,
     'explore': explore,
     'fuite': fuite,
     'combat': combat,
