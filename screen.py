@@ -4,6 +4,7 @@ from art import *
 from rich import *
 import winsound
 import sys
+import signal
 
 def loading():
     terminal_size = os.get_terminal_size()
@@ -56,10 +57,10 @@ def loading():
 
 
 def menu():
-    winsound.PlaySound('sounds/title.wav', winsound.SND_ASYNC | winsound.SND_ALIAS )
+    winsound.PlaySound('sounds/startup.wav', winsound.SND_ASYNC | winsound.SND_ALIAS )
     tprint("               SudoQuest")
     tprint("                      le jeu")
-    time.sleep(5)
+    time.sleep(3)
     print("Appuyez sur Entrée pour continuer ...")
     input("")
     winsound.PlaySound(None, winsound.SND_ASYNC)
@@ -114,6 +115,9 @@ def test():
     # os.system('cls')
 
 def over():
-    print("GAME OVER !!")
-    sys.stdout.flush()
+    time.sleep(3)
+    signal.signal(signal.SIGINT, over)
+    tprint("GAME OVER !!")
+    #sys.stdout.flush()
     input()
+    exit(0)
