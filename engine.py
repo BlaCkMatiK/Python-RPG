@@ -12,7 +12,7 @@ def main():
     title()
     os.system("cls")
     player = create_character()
-    stats(player)
+    #stats(player)
     while Character.is_alive(player):
         choose_event(player)
     over()

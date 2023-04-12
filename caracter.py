@@ -83,23 +83,46 @@ class Character:
         self.decrease_health(wounds)
         self.show_health()
 
-    
-
-    
-
-    
-
 
 def create_character():
     a_dice=Dice(6)
-    name = input("Nom ? : \n")
-    # job = input("What is your job? ")
-    # strength = int(input("What is your strength level (1-10)? "))
-    # dexterity = int(input("What is your dexterity level (1-10)? "))
-    # intelligence = int(input("What is your intelligence level (1-10)? "))
-    character = Character(100,10,10,10,a_dice)
+    name = input("Le nom de votre personnage ? :  ")
+    classe = input("Choisis ta classe : \n 1. Warrior \n 2. Mage \n 3. Thief \n:")
+    # while classe == 0 or (classe != 1 and classe != 2) :
+    #     classe = input("Choisis ta classe : \n 1. Warrior \n 2. Mage : ")
+    if classe == "1":
+        character = Warrior(20, 8, 5, 2, a_dice)
+    elif classe == "2":
+        character = Mage(15, 10, 10, 2, a_dice)
+    elif classe == "3":
+        character = Thief(10,10,10,10, a_dice)
     character.name = name
     print("Hello, " + Character.get_name(character) + "!")
+    
+    points_de_competences = 50
+
+    print("Vous avez", points_de_competences,
+          "points de compétences à attribuer.")
+
+    while points_de_competences > 0:
+        print("Statistiques actuelles :")
+        print("Points de vie :", character.max_health)
+        print("Attaque :", character.attack_value)
+        print("Défense :", character.defense_value)
+        n_hp = int(input("Combien de points d'HP ? : "))
+        character.max_health += n_hp
+        character.regenerate()
+        points_de_competences -= n_hp
+        if points_de_competences > 0:
+            n_atk = int(input("Combien de points d'ATK ? : "))
+            character.attack_value += n_atk
+            points_de_competences -= n_atk
+            if points_de_competences > 0:
+                n_def = int(input("Combien de points de DEF ? : "))
+                character.defense_value += n_def
+                points_de_competences -= n_def
+    print(character)
+    print("%s enters a dark cave, searching for adventure." % character.name)
 
     return character
 
@@ -146,11 +169,11 @@ if __name__ == "__main__":
     # while classe == 0 or (classe != 1 and classe != 2) :
     #     classe = input("Choisis ta classe : \n 1. Warrior \n 2. Mage : ")
     if classe == "1":
-        car1 = Warrior(20, 8, 5, 2, a_dice)
+        character = Warrior(20, 8, 5, 2, a_dice)
     elif classe == "2":
-        car1 = Mage(15, 10, 10, 2, a_dice)
+        character = Mage(15, 10, 10, 2, a_dice)
 
-    car1.name = name
+    character.name = name
     points_de_competences = 50
 
     print("Vous avez", points_de_competences,
@@ -158,21 +181,21 @@ if __name__ == "__main__":
 
     while points_de_competences > 0:
         print("Statistiques actuelles :")
-        print("Points de vie :", car1.max_health)
-        print("Attaque :", car1.attack_value)
-        print("Défense :", car1.defense_value)
+        print("Points de vie :", character.max_health)
+        print("Attaque :", character.attack_value)
+        print("Défense :", character.defense_value)
         n_hp = int(input("Combien de points d'HP ? : "))
-        car1.max_health += n_hp
-        car1.regenerate()
+        character.max_health += n_hp
+        character.regenerate()
         points_de_competences -= n_hp
         if points_de_competences > 0:
             n_atk = int(input("Combien de points d'ATK ? : "))
-            car1.attack_value += n_atk
+            character.attack_value += n_atk
             points_de_competences -= n_atk
             if points_de_competences > 0:
                 n_def = int(input("Combien de points de DEF ? : "))
-                car1.defense_value += n_def
+                character.defense_value += n_def
                 points_de_competences -= n_def
-    print(car1)
-    print("%s enters a dark cave, searching for adventure." % car1.name)
+    print(character)
+    print("%s enters a dark cave, searching for adventure." % character.name)
 

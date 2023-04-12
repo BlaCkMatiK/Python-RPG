@@ -2,6 +2,7 @@ from random import *
 from caracter import *
 import random
 from rich import print
+from screen import over
 
 
 a_dice=Dice(6)
@@ -146,6 +147,7 @@ Commands = {
     # 'help': Player.help,
     # 'status': Player.status,
     # 'rest': Player.rest,
+    #'over': over,
     'explore': explore,
     'fuite': fuite,
     'combat': combat,
