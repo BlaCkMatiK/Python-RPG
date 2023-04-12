@@ -3,6 +3,7 @@ import time
 from art import *
 from rich import *
 import winsound
+import sys
 
 def loading():
     terminal_size = os.get_terminal_size()
@@ -114,3 +115,5 @@ def test():
 
 def over():
     print("GAME OVER !!")
+    sys.stdout.flush()
+    input()
