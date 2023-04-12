@@ -3,6 +3,8 @@ from caracter import *
 import random
 from rich import print
 from screen import over
+import winsound
+import time
 
 
 a_dice=Dice(6)
@@ -11,7 +13,9 @@ a_dice=Dice(6)
 def explore(self):
     if self.status != "combat":
         print("%s explore un passage étroit." % self.name)
+        time.sleep(2)
         res = randint(1, 10)
+        print(f"dé :{res}")
         if res <= 5:
             print("%s rencontre %s" % (self.name, 'un ennemi !'))
             print("Veux tu te battre ou tenter de fuire? ('combat' ou 'fuite')")
@@ -26,9 +30,12 @@ def explore(self):
                 print(".")
             time.sleep(1)
             print("OHHH NON vous venez de vous prendre un piège!")
+            winsound.PlaySound('sounds/trap.wav', winsound.SND_ASYNC | winsound.SND_ALIAS )
             time.sleep(1)
             print("Vous avez perdu 2hp :/ ")
             self.health = self.health - 2
+        else:
+            print("Ouf ! Il ne se passe rien dans cette salle")
     else:
         print("Vous ne pouvez pas partir comme ça")
 
@@ -70,6 +77,8 @@ def combat(self):
                 time.sleep(1)
                 self.status = "normal"
         if self.is_alive():
+            print(f"[green]Vous avez gagné ce combat ![green]")
+            winsound.PlaySound('sounds/fight_win.wav', winsound.SND_ASYNC | winsound.SND_ALIAS )
             quantite_or = randint(0, 5)
             ajouter_or(self, quantite_or)
             self.vitesse = self.vitesse_T
@@ -83,22 +92,26 @@ def ajouter_or(self, quantite_or):
             f"[yellow]{self.name} a trouvé {quantite_or} pièces d'or ![yellow]")
 
 def ouvrir_coffre(self):
-        print("Le coffre s'ouvre")
-        """ Fonction qui retourne un item aléatoire parmi une arme, une armure ou de l'or """
-        items = ["arme", "armure", "or", "potion"]
-        item_choisi = random.choice(items)
-        if item_choisi == "arme":
-            print("Vous avez trouvé une arme !")
-            ajouter_arme(self, item_choisi)
-        elif item_choisi == "armure":
-            print("Vous avez trouvé une armure !")
-            ajouter_armure(self, item_choisi)
-        elif item_choisi == "potion":
-            print("Vous avez trouvé une potion !")
-            ajouter_potion(self, item_choisi)
+        choix=input("Voulez-vous ouvrir ce coffre ? (Oui/Non)")
+        if choix=="Oui":
+            print("Le coffre s'ouvre")
+            """ Fonction qui retourne un item aléatoire parmi une arme, une armure ou de l'or """
+            items = ["arme", "armure", "or", "potion"]
+            item_choisi = random.choice(items)
+            if item_choisi == "arme":
+                print("Vous avez trouvé une arme !")
+                ajouter_arme(self, item_choisi)
+            elif item_choisi == "armure":
+                print("Vous avez trouvé une armure !")
+                ajouter_armure(self, item_choisi)
+            elif item_choisi == "potion":
+                print("Vous avez trouvé une potion !")
+                ajouter_potion(self, item_choisi)
+            else:
+                quantite_or = random.randint(1, 10)
+                ajouter_or(self, quantite_or)
         else:
-            quantite_or = random.randint(1, 10)
-            ajouter_or(self, quantite_or)
+            print("Vous n'avez pas ouvert ce coffre.")
 
 def ajouter_arme(self, arme):
         """ Ajoute une arme à l'inventaire du personnage """
