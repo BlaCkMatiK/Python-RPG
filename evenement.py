@@ -10,42 +10,42 @@ a_dice=Dice(6)
 
 def explore(self):
     if self.status != "combat":
-        print("%s explores a twisty passage." % self.name)
+        print("%s explore un passage étroit." % self.name)
         res = randint(1, 10)
         if res <= 5:
-            print("%s encounters %s!" % (self.name, 'a goblin'))
+            print("%s rencontre %s!" % (self.name, 'un goblin !'))
             print("Veux tu te battre ou tenter de fuire? ('combat' ou 'fuite')")
             self.status = "combat"
         elif res > 5 and res < 8:
             print("Vous avez trouvé un coffre !")
             ouvrir_coffre(self)
         elif res > 8:
-            print("Tout est tres calme dans cette piece...")
+            print("Tout est très calme dans cette pièce...")
             for i in range(0, 3):
                 time.sleep(1)
                 print(".")
             time.sleep(1)
-            print("OHHH NON vous venez de vous prendre un piege!")
+            print("OHHH NON vous venez de vous prendre un piège!")
             time.sleep(1)
             print("Vous avez perdu 2hp :/ ")
             self.health = self.health - 2
     else:
-        print("tu ne peux pas partir comme ça")
+        print("Vous ne pouvez pas partir comme ça")
 
 def fuite(self):
     if self.status == "combat":
         res = randint(0, self.discrétion)
         if res > 4:
             self.status = "normal"
-            print("Vous avez réussis à fuire")
+            print("Vous avez réussi à fuire")
         else:
-            print("Vous n'avez pas réussis a fuire")
+            print("Vous n'avez pas réussi a fuire")
             self.status = "combat"
             self.vitesse_T = self.vitesse
             self.vitesse = 0
             Commands["combat"](self)
     else:
-        print("Mais tu n'es pas en combat")
+        print("Mais vous n'êtes pas en combat")
 
 def combat(self):
     if self.status == "combat":
@@ -105,8 +105,6 @@ def ajouter_armure(self, armure):
     self.armures.append(armure)
     print(f"{self.name} a ajouté {armure} à son inventaire.")
 
-
-
 def ajouter_potion(self, potion):
     """ Ajoute une potion à l'inventaire du personnage """
     self.potions.append(potion)
@@ -139,7 +137,7 @@ def choose_event(player):
                     commandFound = True
                     break
             if not commandFound:
-                print("%s doesn't understand the suggestion." % player.name)
+                print("%s ne comprend pas." % player.name)
     print("Tu es mort ^^")
 
 Commands = {

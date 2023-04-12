@@ -27,7 +27,7 @@ class Character:
         self.potions = []
 
     def __str__(self):
-        return f"{self.name} the {type(self).type} is starting the fight with {self.max_health}hp ({self.attack_value} atk / {self.defense_value} def)\n"
+        return f"{self.name} le {type(self).type} démmare le combat avec {self.max_health}hp ({self.attack_value} atk / {self.defense_value} def)\n"
 
     def regenerate(self):
         self.health = self.max_health
@@ -41,9 +41,21 @@ class Character:
         return self.health > 0
 
     def show_health(self):
-        missing_health = self.max_health - self.health
-        health_bar = f"Barre de vie de {self.name} : [{'●'*self.health}{'○'*missing_health}] {self.health}/{self.max_health}hp\n"
-        print(health_bar)
+        print("[",end="")
+        if self.health / self.max_health >= 0.5:
+            emoji = "💚"
+        else :
+            emoji = "❤️"
+        for i in range(0, self.health):
+            print(emoji,end="")
+        for i in range(self.health, self.max_health):
+            print("🖤", end="")
+        print("]")
+
+    # def show_health(self):
+    #     missing_health = self.max_health - self.health
+    #     health_bar = f"Barre de vie de {self.name} : [{'●'*self.health}{'○'*missing_health}] {self.health}/{self.max_health}hp\n"
+    #     print(health_bar)
 
     def get_type(self):
         return type(self).type
@@ -58,17 +70,13 @@ class Character:
         damages = roll + self.attack_value
         return damages
 
-    
-
-    
-
     def attack(self, target):
         if self.is_alive():
 
             roll = self.dice.roll()
             damages = self.compute_damages(roll, target)
             print(
-                f"⚔️ [red]{self.get_type()} {self.name} attack[/red] with {damages} damages (attack: {self.attack_value} + roll: {roll})")
+                f"⚔️ [red]{self.get_type()} {self.name} attaque[/red] avec {damages} dommages (attack: {self.attack_value} + dé {roll})")
             target.defend(damages)
 
     def compute_defense(self, roll, damages):
@@ -77,7 +85,7 @@ class Character:
     def defend(self, damages):
         roll = self.dice.roll()
         wounds = self.compute_defense(roll, damages)
-        print(f"🛡️ [blue]{self.get_type()} {self.name} defend[/blue] against {damages} damages and take {wounds} wounds ({damages} damages - defense {self.defense_value} - roll {roll})")
+        print(f"🛡️ [blue]{self.get_type()} {self.name} se défend[/blue] contre {damages} dommages et en prends {wounds}. ({damages} dommages - défense {self.defense_value} - dé {roll})")
         if wounds < 0:
             wounds = 0
         self.decrease_health(wounds)
@@ -87,7 +95,7 @@ class Character:
 def create_character():
     a_dice=Dice(6)
     name = input("Le nom de votre personnage ? :  ")
-    classe = input("Choisis ta classe : \n 1. Warrior \n 2. Mage \n 3. Thief \n:")
+    classe = input("Choisis ta classe (hp / atk / def / vit): \n 1. Warrior (20 / 8 / 5 / 2) \n 2. Mage (15 / 10 / 10 / 2) \n 3. Thief (10 / 10 / 10 / 10) \n:")
     # while classe == 0 or (classe != 1 and classe != 2) :
     #     classe = input("Choisis ta classe : \n 1. Warrior \n 2. Mage : ")
     if classe == "1":
@@ -122,15 +130,13 @@ def create_character():
                 character.defense_value += n_def
                 points_de_competences -= n_def
     print(character)
-    print("%s enters a dark cave, searching for adventure." % character.name)
+    print("%s entre dans une cave sombre, à la recherche de l'aventure..." % character.name)
 
     return character
 
 def stats(character):
     print("TEST")
     print(f"{character.get_name()}, {character.show_health()}") 
-    
-
 
 class Warrior(Character):
     type = "Warrior"
@@ -139,7 +145,6 @@ class Warrior(Character):
         print("Bonus : Axe in your face ! (+3 damages)")
         return super().compute_damages(roll, target) + 3
 
-
 class Mage(Character):
     type = "Mage"
 
@@ -147,10 +152,8 @@ class Mage(Character):
         print("Bonus : Magic armor ! (-3 wournds)")
         return super().compute_defense(roll, damages) - 3
 
-
 class Enemy(Character):
     type = "Ennemy"
-
 
 class Thief(Character):
     type = "Thief"

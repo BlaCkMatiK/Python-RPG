@@ -114,5 +114,3 @@ def test():
 
 def over():
     print("GAME OVER !!")
-
-title()
