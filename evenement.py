@@ -13,10 +13,13 @@ a_dice=Dice(6)
 def explore(self):
     if self.status != "combat":
         print("%s explore un passage étroit." % self.name)
-        time.sleep(2)
+        time.sleep(1)
         res = randint(1, 10)
         print(f"dé :{res}")
-        if res <= 5:
+        if res == 1:
+            print("Il y a un marchand !")
+            pass
+        elif res > 1 and res <= 5:
             print("%s rencontre %s" % (self.name, 'un ennemi !'))
             print("Veux tu te battre ou tenter de fuire? ('combat' ou 'fuite')")
             self.status = "combat"
@@ -42,6 +45,7 @@ def explore(self):
 def fuite(self):
     if self.status == "combat":
         res = randint(0, self.discrétion)
+        print(f"dé :{res}")
         if res > 4:
             self.status = "normal"
             print("Vous avez réussi à fuire")
@@ -93,7 +97,7 @@ def ajouter_or(self, quantite_or):
 
 def ouvrir_coffre(self):
         choix=input("Voulez-vous ouvrir ce coffre ? (Oui/Non)")
-        if choix=="Oui":
+        if choix.lower().startswith("o"):
             print("Le coffre s'ouvre")
             """ Fonction qui retourne un item aléatoire parmi une arme, une armure ou de l'or """
             items = ["arme", "armure", "or", "potion"]
@@ -143,6 +147,10 @@ def loose_hp(player):
     print(f"{player.health} - 10 = {player.health}")
     player.health -= 10
 
+def konami(self):
+    print("Haut, Haut, Bas, Bas, Gauche, Droite, Gauche, Droite, B, A")
+
+
 def choose_event(player):
     while (Character.is_alive(player)):
         line = input("> ")
@@ -172,7 +180,8 @@ Commands = {
     'combat': combat,
     'hp': Character.show_health,
     'inventaire': afficher_inventaire,
-    'loose': loose_hp
+    'loose': loose_hp,
+    'konami': konami
 }
 
 
