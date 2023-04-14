@@ -18,16 +18,20 @@ def handle_signal(signal_num, frame):
 
 signal.signal(signal.SIGINT, handle_signal)
 
-def main():
+def start():
     title()
     os.system("cls")
+
+def main():    
     player = create_character()
     #stats(player)
     while Character.is_alive(player):
         choose_event(player)
     over()
+    main()
 
 if __name__ == "__main__":
+    start()
     while True:
         main()
     

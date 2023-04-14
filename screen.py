@@ -119,5 +119,8 @@ def over():
     signal.signal(signal.SIGINT, over)
     tprint("GAME OVER !!")
     #sys.stdout.flush()
-    input()
-    exit(0)
+    fin = input("Rejouer ? (Oui/Non)")
+    if fin.lower().startswith("o"):
+        pass
+    else :
+        exit(0)
