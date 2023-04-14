@@ -92,6 +92,7 @@ class Character:
         self.show_health()
 
 def create_character():
+    os.system("cls")
     name = input("Le nom de votre personnage ? \n: ")
     valid_inputs = ["1", "2", "3", "4"]
     os.system("cls")
