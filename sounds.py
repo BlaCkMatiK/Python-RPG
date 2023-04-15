@@ -52,6 +52,31 @@ def sound_enter():
     sounds_enter = pygame.mixer.Sound('sounds/enter.wav')
     sounds_enter.play()
 
+def sound_OHKO():
+    sound_init()
+    sounds_OHKO = pygame.mixer.Sound('sounds/OHKO.wav')
+    sounds_OHKO.play()
+
+def sound_encounter():
+    sound_init()
+    sounds_encounter = pygame.mixer.Sound('sounds/encounter.wav')
+    sounds_encounter.play()
+
+def sound_battle():
+    sound_init()
+    sounds_battle = pygame.mixer.Sound('sounds/battle.wav')
+    sounds_battle.play(loops=-1)
+
+def sound_hit():
+    sound_init()
+    sounds_hit = pygame.mixer.Sound('sounds/hit.wav')
+    sounds_hit.play()
+
+def sound_item():
+    sound_init()
+    sounds_item = pygame.mixer.Sound('sounds/item.wav')
+    sounds_item.play()
+
 def quit_pygame():
     pygame.mixer.quit()
     pygame.quit()
