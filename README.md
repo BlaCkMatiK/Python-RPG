@@ -38,7 +38,7 @@ Il peut inscrire des commandes dans la console qui lui permettront de s'aventure
 
 ## Systèmes
 
-Actuellement, le joueur peut explorer le donjon. Aléatoirement, il peut rencontrer des évènements comme des coffres, des pièges ou des combats. Ces derniers sont contre des gobelins qui, une fois vaincus, donnent or, armes et armures.
+Actuellement, le joueur peut explorer le donjon. Aléatoirement, il peut rencontrer des évènements comme des coffres, des pièges ou des combats. Ces derniers sont contre des monstres aléatoires qui, une fois vaincus, donnent or, armes et armures.
 
 ## Commandes
 
