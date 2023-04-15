@@ -5,10 +5,16 @@ from rich import print
 from screen import over
 import time
 from sounds import *
+from art import *
 
 
 a_dice=Dice(6)
 
+def help(self):
+    os.system("cls")
+    tprint("PAGE D'AIDE")
+    print("\nexplore pour avancer\nhp pour connaitre ses points de vie\nhelp pour voir cette page\n[italic]>>> signifie : Appuyez sur entrée pour continuer[italic]")
+    input(">>>")
 
 def explore(self):
     if self.status != "combat":
@@ -61,9 +67,23 @@ def fuite(self):
         print("Mais vous n'êtes pas en combat")
 
 def rencontre(self):
+    time.sleep(0.1)
+    quit_pygame()
+    sound_battle()
     print("%s rencontre %s" % (self.name, 'un ennemi !'))
     print("Veux tu te battre ou tenter de fuire? ('combat' ou 'fuite')")
     self.status = "combat"
+    line = input(">> ")
+    args = line.split()
+    if len(args) > 0:
+        commandFound = False
+        for c in Commands.keys():
+            if args[0] == c[:len(args[0])]:
+                Commands[c](self)
+                commandFound = True
+                break
+        if not commandFound:
+            print("%s ne comprend pas." % self.name)
 
 def random_enemy():
     enemies = [CrawlingVermin(), ShadowStalker(), VenomousSerpent(), DeathbringerScorpion(), AbyssalHorror()]
@@ -104,17 +124,27 @@ def combat(self):
                 tour +=1
         print(f"Combat terminé en {tour+1} tours !")        
         if self.is_alive():
-            print(f"[green]Vous avez gagné ce combat ![green]")
+            quit_pygame()
+            time.sleep(0.1)
             sound_win_fight()
+            print(f"[green]Vous avez gagné ce combat ![green]")
             quantite_or = randint(0, 5)
+            input(">>>")
             ajouter_or(self, quantite_or)
             self.vitesse = self.vitesse_T
             self.kills +=1
+            input(">>>")
+            quit_pygame()
             if tour == 0 :
                 self.OHKO +=1
+                time.sleep(0.1)
+                sound_OHKO()
                 print(f"[red]C'est un one-shot ![red]")
+                input(">>>")
+                os.system("cls")
             if tour > self.tours_max:
                 self.tours_max = tour
+            sound_bgm()
     else:
         print("Mais t'es con t'es pas en combat")
 
@@ -146,10 +176,17 @@ def ouvrir_coffre(self):
             else:
                 quantite_or = random.randint(1, 10)
                 ajouter_or(self, quantite_or)
+            sound_item()
+            time.sleep(2)
+            print("Vous fermez le coffre")
             sound_chest_c()
             self.chests +=1
+            input(">>>")
+            os.system("cls")
         else:
             print("Vous n'avez pas ouvert ce coffre.")
+            input(">>>")
+            os.system("cls")
 
 def ajouter_arme(self, arme):
         """ Ajoute une arme à l'inventaire du personnage """
@@ -186,7 +223,8 @@ def konami(self):
 
 def choose_event(player):
     while (Character.is_alive(player)):
-        line = input("> ")
+        print("[italic]> help pour afficher l'aide[italic]\n")
+        line = input(">> ")
         args = line.split()
         if len(args) > 0:
             commandFound = False
@@ -201,13 +239,12 @@ def choose_event(player):
     time.sleep(2)
     quit_pygame()
     
-
 def over_e(player):
     over()
 
 Commands = {
     # 'quit': Player.quit,
-    # 'help': Player.help,
+    'help': help,
     # 'status': Player.status,
     # 'rest': Player.rest,
     'over': over_e,
@@ -220,6 +257,6 @@ Commands = {
     'konami': konami
 }
 
-
-# for i in range (100):
-#     print (randint(0,4))
+if __name__ == "__main__":
+    self = create_character()
+    rencontre(self)
