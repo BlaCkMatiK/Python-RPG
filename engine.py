@@ -3,6 +3,7 @@ import os
 import random
 import time
 
+
 from caracter import *
 from dice import Dice
 from evenement import *
@@ -22,7 +23,7 @@ signal.signal(signal.SIGINT, handle_signal)
 def start():
     title()    
     sound_create()
-    menu()
+    story()
 
 def main():
     player = create_character()
