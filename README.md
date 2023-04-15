@@ -1,6 +1,6 @@
 # SudoQuest
 
-![image info](./img\logo.png)
+![image info](./img/logo.png)
 
 SudoQuest est un rogue-like en ligne de commandes codé en Python.
 
