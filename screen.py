@@ -2,9 +2,10 @@ import os
 import time
 from art import *
 from rich import *
-import winsound
 import sys
 import signal
+from sounds import *
+import pyfiglet
 
 def loading():
     terminal_size = os.get_terminal_size()
@@ -55,20 +56,27 @@ def loading():
     time.sleep(1)
     os.system("cls")
 
-
-def menu():
-    winsound.PlaySound('sounds/startup.wav', winsound.SND_ASYNC | winsound.SND_ALIAS )
+def startup():
+    os.system("cls")
+    sound_startup()
     tprint("               SudoQuest")
+    time.sleep(2.5)
     tprint("                      le jeu")
     time.sleep(3)
     print("Appuyez sur Entrée pour continuer ...")
     input("")
-    winsound.PlaySound(None, winsound.SND_ASYNC)
+    quit_pygame()
+
+def menu():
+    pass
 
 def title():
-    loading()
-    menu()
-    
+    #loading()
+    startup()
+
+def story():
+    pass
+
 def test(): 
     pass
     # test="Hello World !"
@@ -115,12 +123,64 @@ def test():
     # os.system('cls')
 
 def over():
+    quit_pygame()
     time.sleep(3)
     signal.signal(signal.SIGINT, over)
+    sound_game_over()
     tprint("GAME OVER !!")
     #sys.stdout.flush()
+    time.sleep(5)
     fin = input("Rejouer ? (Oui/Non)")
     if fin.lower().startswith("o"):
         pass
     else :
         exit(0)
+
+def end_stats(self):
+    os.system("cls")
+    tprint("GAME OVER")
+    print(f"\nVous avez vaincu {self.kills} ennemis !\nVotre plus long combat à duré {self.tours_max} tours !\nVOus avez one-tap {self.OHKO} enemis !\nVous avez ouvert {self.chests} coffres !\nVous avez accumulé {self.gold} or !\nVous avez \"exploré\" {self.steps} fois !\nVous êtes tombé dans {self.traps} pièges !\n")
+    fin = input("\nRejouer ? (Oui/Non)")
+    if fin.lower().startswith("o"):
+        pass
+    else :
+        exit(0)
+
+def print_game_over():
+    quit_pygame()
+    sound_game_over()
+    text = "game over"
+
+    for char in text:
+        ascii_art = pyfiglet.figlet_format(char)
+        print(ascii_art, end='')
+        time.sleep(0.5)
+    time.sleep(2)
+
+def print_game_over2():
+    sound_game_over()
+    game_text = "game"
+    over_text = "over"
+    width = os.get_terminal_size().columns
+    height = os.get_terminal_size().lines
+    padding_top = (height - 1) // 2
+    game_padding_left = 0
+    over_padding_left = width - len(over_text)
+    while game_padding_left <= (width - len(game_text)) // 2 or over_padding_left >= (width - len(over_text)) // 2:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("\n" * padding_top)
+        print(" " * game_padding_left + game_text, end='')
+        print(" " * over_padding_left + over_text, end='')
+        game_padding_left += 2
+        over_padding_left -= 2
+        time.sleep(0.02)
+    time.sleep(6)
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("game over".center(width))
+
+if __name__ == "__main__":
+    print_game_over()
+
+
+                                                               
+                                                               
