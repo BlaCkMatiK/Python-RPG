@@ -26,6 +26,12 @@ class Character:
         self.armures = []
         self.armes = []
         self.potions = []
+        self.kills = 0
+        self.tours_max = 0
+        self.steps = 0
+        self.chests = 0
+        self.OHKO = 0
+        self.traps = 0
 
     def __str__(self):
         return f"{self.name} le {type(self).type} descend dans le donjon avec {self.max_health}hp, {self.attack_value} atk et {self.defense_value} def\n"
@@ -42,7 +48,7 @@ class Character:
         return self.health > 0
 
     def show_health(self):
-        print("[",end="")
+        #print("[",end="\r")
         if self.health / self.max_health >= 0.5:
             emoji = "💚"
         else :
@@ -51,12 +57,12 @@ class Character:
             print(emoji,end="")
         for i in range(self.health, self.max_health):
             print("🖤", end="")
-        print(f"] ({self.health} / {self.max_health})")
+        print(f"  ({self.health} / {self.max_health})\n")
 
-    # def show_health(self):
-    #     missing_health = self.max_health - self.health
-    #     health_bar = f"Barre de vie de {self.name} : [{'●'*self.health}{'○'*missing_health}] {self.health}/{self.max_health}hp\n"
-    #     print(health_bar)
+    def show_health2(self):
+        missing_health = self.max_health - self.health
+        health_bar = f"Barre de vie de {self.name} : [{'●'*self.health}{'○'*missing_health}] {self.health}/{self.max_health}hp\n"
+        print(health_bar)
 
     def get_type(self):
         return type(self).type
@@ -73,10 +79,9 @@ class Character:
 
     def attack(self, target):
         if self.is_alive():
-
             roll = self.dice.roll()
-            damages = self.compute_damages(roll, target)
-            print(f"⚔️ [red]{self.get_name()} attaque[/red] avec {damages} dommages (attack: {self.attack_value} + dé {roll})")
+            damages = self.compute_damages(roll, target)    
+            print(f"ATTAQUE⚔️\n     [red]{self.get_name()} attaque[/red] avec {damages} dommages (attack: {self.attack_value} + dé {roll})")
             target.defend(damages)
 
     def compute_defense(self, roll, damages):
@@ -85,21 +90,28 @@ class Character:
     def defend(self, damages):
         roll = self.dice.roll()
         wounds = self.compute_defense(roll, damages)
-        print(f"🛡️ [blue]{self.get_name()} se défend[/blue] contre {damages} dommages et en prends {wounds}. ({damages} dommages - défense {self.defense_value} - dé {roll})")
+        if wounds < 0:
+            wounds = 0
+        print(f"DEFENSE🛡️\n     [blue]{self.get_name()} se défend[/blue] contre {damages} dommages et en prends {wounds}. ({damages} dommages - défense {self.defense_value} - dé {roll})", end="\n")
         if wounds < 0:
             wounds = 0
         self.decrease_health(wounds)
         self.show_health()
+        #time.sleep(2)
+
+def turn():
+    pass
 
 def create_character():
     os.system("cls")
-    name = input("Le nom de votre personnage ? \n: ")
+    name = input("Le nom de votre personnage ? \n \n-> : ")
     valid_inputs = ["1", "2", "3", "4"]
     os.system("cls")
     
     while True:
         try:
-            classe = input(f"{name}, choisissez votre classe (hp / atk / def / vit): \n1. Warrior (20 / 8 / 5 / 2) \n2. Mage (15 / 10 / 10 / 2) \n3. Thief (10 / 10 / 10 / 10) \n4. Looser (1 / 1 / 1 / 1) \n \n: ")
+            print(f"[pink]{name}[pink], choisissez votre classe (hp ❤️ / atk ⚔️ / def 🛡️ / vit 💨): ")
+            classe = input(f"\n\n*************\n\n1. Warrior (20 ❤️ / 8 ⚔️ / 5 🛡️ / 2 💨) \n\n2. Mage (15 ❤️ / 10 ⚔️ / 10 🛡️ / 2 💨) \n\n3. Thief (10 ❤️ / 10 ⚔️ / 10 🛡️ / 10 💨) \n\n4. Looser (1 ❤️ / 1 ⚔️ / 1 🛡️ / 1 💨) \n \n-> : ")
             if str(classe) not in valid_inputs:
                 raise ValueError
             break
