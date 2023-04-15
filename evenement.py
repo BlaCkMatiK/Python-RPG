@@ -3,8 +3,8 @@ from caracter import *
 import random
 from rich import print
 from screen import over
-import winsound
 import time
+from sounds import *
 
 
 a_dice=Dice(6)
@@ -12,6 +12,7 @@ a_dice=Dice(6)
 
 def explore(self):
     if self.status != "combat":
+        self.steps += 1
         print("%s explore un passage étroit." % self.name)
         time.sleep(1)
         res = randint(1, 10)
@@ -20,27 +21,28 @@ def explore(self):
             print("Il y a un marchand !")
             pass
         elif res > 1 and res <= 5:
-            print("%s rencontre %s" % (self.name, 'un ennemi !'))
-            print("Veux tu te battre ou tenter de fuire? ('combat' ou 'fuite')")
-            self.status = "combat"
+            rencontre(self)
         elif res > 5 and res < 8:
-            print("Vous avez trouvé un coffre !")
             ouvrir_coffre(self)
         elif res > 8:
-            print("Tout est très calme dans cette pièce...")
-            for i in range(0, 3):
-                time.sleep(1)
-                print(".")
-            time.sleep(1)
-            print("OHHH NON vous venez de vous prendre un piège!")
-            winsound.PlaySound('sounds/trap.wav', winsound.SND_ASYNC | winsound.SND_ALIAS )
-            time.sleep(1)
-            print("Vous avez perdu 2hp :/ ")
-            self.health = self.health - 2
+            piege(self)
         else:
             print("Ouf ! Il ne se passe rien dans cette salle")
     else:
         print("Vous ne pouvez pas partir comme ça")
+
+def piege(self):
+    print("Tout est très calme dans cette pièce...")
+    for i in range(0, 3):
+        time.sleep(1)
+        print(".")
+    time.sleep(1)
+    print("OHHH NON vous venez de vous prendre un piège!")
+    sound_trap()
+    time.sleep(1)
+    print("Vous avez perdu 2hp :/ ")
+    self.health = self.health - 2
+    self.traps +=1
 
 def fuite(self):
     if self.status == "combat":
@@ -58,6 +60,11 @@ def fuite(self):
     else:
         print("Mais vous n'êtes pas en combat")
 
+def rencontre(self):
+    print("%s rencontre %s" % (self.name, 'un ennemi !'))
+    print("Veux tu te battre ou tenter de fuire? ('combat' ou 'fuite')")
+    self.status = "combat"
+
 def random_enemy():
     enemies = [CrawlingVermin(), ShadowStalker(), VenomousSerpent(), DeathbringerScorpion(), AbyssalHorror()]
     return random.choice(enemies)
@@ -66,26 +73,48 @@ def combat(self):
     if self.status == "combat":
         time.sleep(1)
         goblin = random_enemy()
+        os.system("cls")
         print(f"C'est un {goblin.name} ! \n")
+        tour = -1
+        print(f"Vitesse de {self.name} = {self.vitesse}; vitesse de {goblin.name} = {goblin.vitesse}")
+        time.sleep(3)
+        os.system("cls")
         while (self.is_alive() and goblin.is_alive()):
             if self.vitesse >= goblin.vitesse:
+                print(f"Combat contre {goblin.name} / Tour {tour+2}\n----------------------\n")
                 self.attack(goblin)
-                time.sleep(1)
+                time.sleep(2)
+                print("********\n")
                 goblin.attack(self)
-                time.sleep(1)
+                time.sleep(2)
                 self.status = "normal"
+                input("(Appuyez sur Entrée pour le tour suivant)")
+                os.system("cls")
+                tour +=1
             if self.vitesse < goblin.vitesse:
+                print(f"Combat contre {goblin.name} / Tour {tour+2}\n----------------------\n")
                 goblin.attack(self)
-                time.sleep(1)
+                time.sleep(2)
+                print("********\n")
                 self.attack(goblin)
-                time.sleep(1)
+                time.sleep(2)
                 self.status = "normal"
+                input("(Appuyez sur Entrée pour le tour suivant)")
+                os.system("cls")
+                tour +=1
+        print(f"Combat terminé en {tour+1} tours !")        
         if self.is_alive():
             print(f"[green]Vous avez gagné ce combat ![green]")
-            winsound.PlaySound('sounds/fight_win.wav', winsound.SND_ASYNC | winsound.SND_ALIAS )
+            sound_win_fight()
             quantite_or = randint(0, 5)
             ajouter_or(self, quantite_or)
             self.vitesse = self.vitesse_T
+            self.kills +=1
+            if tour == 0 :
+                self.OHKO +=1
+                print(f"[red]C'est un one-shot ![red]")
+            if tour > self.tours_max:
+                self.tours_max = tour
     else:
         print("Mais t'es con t'es pas en combat")
 
@@ -96,9 +125,12 @@ def ajouter_or(self, quantite_or):
             f"[yellow]{self.name} a trouvé {quantite_or} pièces d'or ![yellow]")
 
 def ouvrir_coffre(self):
-        choix=input("Voulez-vous ouvrir ce coffre ? (Oui/Non)")
+        print("Vous avez trouvé un coffre !")
+        choix=input("Voulez-vous l'ouvrir ? (Oui/Non)")
         if choix.lower().startswith("o"):
-            print("Le coffre s'ouvre")
+            print("Le coffre s'ouvre ...")
+            sound_chest_o()
+            time.sleep(2)
             """ Fonction qui retourne un item aléatoire parmi une arme, une armure ou de l'or """
             items = ["arme", "armure", "or", "potion"]
             item_choisi = random.choice(items)
@@ -114,6 +146,8 @@ def ouvrir_coffre(self):
             else:
                 quantite_or = random.randint(1, 10)
                 ajouter_or(self, quantite_or)
+            sound_chest_c()
+            self.chests +=1
         else:
             print("Vous n'avez pas ouvert ce coffre.")
 
@@ -145,11 +179,10 @@ def afficher_inventaire(self):
 
 def loose_hp(player):
     print(f"{player.health} - 10 = {player.health}")
-    player.health -= 10
+    player.health -= 100
 
 def konami(self):
     print("Haut, Haut, Bas, Bas, Gauche, Droite, Gauche, Droite, B, A")
-
 
 def choose_event(player):
     while (Character.is_alive(player)):
@@ -164,7 +197,10 @@ def choose_event(player):
                     break
             if not commandFound:
                 print("%s ne comprend pas." % player.name)
-    print("Tu es mort ^^")
+    print(f"{player.name} n'a plus de vie !")
+    time.sleep(2)
+    quit_pygame()
+    
 
 def over_e(player):
     over()
