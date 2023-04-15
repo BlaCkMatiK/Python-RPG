@@ -1,5 +1,7 @@
 # SudoQuest
 
+![image info](./img\logo.png)
+
 SudoQuest est un rogue-like en ligne de commandes codé en Python.
 
 ## L'équipe
@@ -55,9 +57,9 @@ Ci dessous, une feuille de route de nos mises à jour.
 
 ### Must
 
-Un écran titre  
-Un écran de Game Over  
-Différents monstres  
+Un écran titre ✔️  
+Un écran de Game Over ⏳  
+Différents monstres ✔️  
 Choix de couloirs  
 
 ### Should
@@ -68,12 +70,12 @@ Expérience / Niveaux => Ennemis + puissants
 ### Could
 
 Affixes (Bonus par armes sur classes, ...)  
-Magasin d'achat d'Items  
+Magasin d'achat d'items  
 
 ### Would
 
-Des sons d'ambiance  
-Un meilleur affichage  
+Des sons d'ambiance ✔️  
+Un meilleur affichage ⏳  
 Sauvegarde + Tableau des scores  
 Joueurs AI  
 Sorts et compétences par gain d'XP  
