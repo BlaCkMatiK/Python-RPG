@@ -3,6 +3,7 @@ import random
 import time
 from rich import *
 from random import *
+from sounds import sound_hit
 
 from dice import Dice, RiggedDice
 
@@ -82,6 +83,7 @@ class Character:
             roll = self.dice.roll()
             damages = self.compute_damages(roll, target)    
             print(f"ATTAQUE⚔️\n     [red]{self.get_name()} attaque[/red] avec {damages} dommages (attack: {self.attack_value} + dé {roll})")
+            sound_hit()
             target.defend(damages)
 
     def compute_defense(self, roll, damages):
