@@ -77,6 +77,11 @@ def sound_item():
     sounds_item = pygame.mixer.Sound('sounds/item.wav')
     sounds_item.play()
 
+def sound_ok():
+    sound_init()
+    sounds_ok = pygame.mixer.Sound('sounds/ok.wav')
+    sounds_ok.play()
+
 def quit_pygame():
     pygame.mixer.quit()
     pygame.quit()
