@@ -2,60 +2,65 @@ from evenement import *
 from caracter import *
 from sounds import *
 from art import *
+from inventaire import *
+from random import choice
+from screen import *
+
+def random_enemy():
+    enemies = [CrawlingVermin(), ShadowStalker(), VenomousSerpent(), DeathbringerScorpion(), AbyssalHorror()]
+    return choice(enemies)
 
 def battle(self):
     if self.status == "combat":
-        time.sleep(1)
         goblin = random_enemy()
         os.system("cls")
+        tprint("COMBAT")
         print(f"C'est un {goblin.name} ! \n")
         tour = -1
         print(f"Vitesse de {self.name} = {self.vitesse}; vitesse de {goblin.name} = {goblin.vitesse}")
-        time.sleep(3)
+        time.sleep(2)
         os.system("cls")
-        while (self.is_alive() and goblin.is_alive()):
+        while self.is_alive() and goblin.is_alive():
+            tprint(f"COMBAT vs {goblin.name} ")
+            tprint(f"TOUR {tour+2} ")
             if self.vitesse >= goblin.vitesse:
-                print(f"Combat contre {goblin.name} / Tour {tour+2}\n----------------------\n")
                 self.attack(goblin)
                 time.sleep(2)
                 print("********\n")
                 goblin.attack(self)
-                time.sleep(2)
-                self.status = "normal"
-                input("(Appuyez sur Entrée pour le tour suivant)")
-                os.system("cls")
-                tour +=1
-            if self.vitesse < goblin.vitesse:
-                print(f"Combat contre {goblin.name} / Tour {tour+2}\n----------------------\n")
+                wait_input_turn()
+            else:
                 goblin.attack(self)
                 time.sleep(2)
                 print("********\n")
                 self.attack(goblin)
-                time.sleep(2)
-                self.status = "normal"
-                input("(Appuyez sur Entrée pour le tour suivant)")
-                os.system("cls")
-                tour +=1
-        print(f"Combat terminé en {tour+1} tours !")        
+                wait_input_turn()
+            self.status = "normal"
+            os.system("cls")
+            tour += 1      
         if self.is_alive():
             quit_pygame()
             time.sleep(0.1)
             sound_win_fight()
-            tprint("VICTOIRE!")
+            tprint("COMBAT - VICTOIRE!")
             print(f"[green]Vous avez gagné ce combat ![green]")
+            print(f"Combat terminé en {tour+1} tours !")
             quantite_or = randint(0, 5)
-            input(">>>")
+            wait_input_pass()
             ajouter_or(self, quantite_or)
+            #xp = randint(3,10)
+            wait_input_pass()
+            ajouter_xp(self, 25)
             self.vitesse = self.vitesse_T
             self.kills +=1
-            input(">>>")
+            wait_input_pass()
             quit_pygame()
             if tour == 0 :
                 self.OHKO +=1
                 time.sleep(0.1)
                 sound_OHKO()
                 print(f"[red]C'est un one-shot ![red]")
-                input(">>>")
+                wait_input()
                 os.system("cls")
             if tour > self.tours_max:
                 self.tours_max = tour
