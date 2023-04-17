@@ -38,7 +38,7 @@ class Character:
         self.p_experience = 0
 
     def __str__(self):
-        return f"{self.name} le {type(self).type} descend dans le donjon avec {self.max_health}hp, {self.attack_value} atk et {self.defense_value} def\n"
+        return f"{self.name} le {type(self).type} descend dans le donjon avec : HP : {self.max_health} ❤️ / ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️)\n"
 
     def regenerate(self):
         self.health = self.max_health
@@ -86,7 +86,7 @@ class Character:
         if self.is_alive():
             roll = self.dice.roll()
             damages = self.compute_damages(roll, target)    
-            print(f"ATTAQUE⚔️\n     [red]{self.get_name()} attaque[/red] avec {damages} dommages (attack: {self.attack_value} + dé {roll})")
+            print(f"ATTAQUE ⚔️\n     [red]{self.get_name()} attaque[/red] avec {damages} dommages (attack: {self.attack_value} + dé {roll})")
             sound_hit()
             target.defend(damages)
 
@@ -128,15 +128,15 @@ def create_character():
     while True:
         try:
             tprint("CREATION DE PERSONNAGE")
-            print(f"[pink]{name}[pink], choisissez votre classe (hp ❤️ / atk ⚔️ / def 🛡️ / vit 💨): ")
-            classe = input(f"\n\n*************\n\n1. Warrior (20 ❤️ / 8 ⚔️ / 5 🛡️ / 2 💨) \n\n2. Mage (15 ❤️ / 10 ⚔️ / 10 🛡️ / 2 💨) \n\n3. Thief (10 ❤️ / 10 ⚔️ / 10 🛡️ / 10 💨) \n\n4. Looser (1 ❤️ / 1 ⚔️ / 1 🛡️ / 1 💨) \n \n-> : ")
+            print(f"[pink]{name}[pink], choisissez votre classe (HP ❤️ / ATK ⚔️ / DEF 🛡️ / VIT ⚡️): ")
+            classe = input(f"\n\n*************\n\n1. Warrior (20 ❤️ / 8 ⚔️ / 5 🛡️ / 2 ⚡️) \n\n2. Mage (15 ❤️ / 10 ⚔️ / 10 🛡️ / 2 ⚡️) \n\n3. Thief (10 ❤️ / 10 ⚔️ / 10 🛡️ / 10 ⚡️) \n\n4. Looser (1 ❤️ / 1 ⚔️ / 1 🛡️ / 1 ⚡️	) \n \n-> : ")
             if str(classe) not in valid_inputs:
                 raise ValueError
             break
         except ValueError:
             tprint("CREATION DE PERSONNAGE")
             os.system("cls")
-            print("Veuillez saisir une valeur entre 1 et 4 !\n")
+            print("[italic][red]Veuillez saisir une valeur entre 1 et 4 ![red][italic]\n")
 
     if classe == "1":
         character = Warrior(20, 8, 5, 2, a_dice)
@@ -155,18 +155,14 @@ def create_character():
     p_caracteristiques=10
 
     while p_caracteristiques > 0:
-        print("Statistiques actuelles :")
-        print(" Points de vie :", character.max_health)
-        print(" Attaque :", character.attack_value)
-        print(" Défense :", character.defense_value)
-        print("Vitesse :", character.vitesse)
-        print(f"Vous avez {p_caracteristiques} points de caractéristique à attribuer :")
+        print(f"Statistiques actuelles :\n(ATK : {character.attack_value} ⚔️ / DEF : {character.defense_value}🛡️ / VIT : {character.vitesse}⚡️)\n")
+        print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer :[italic]")
 
         # Request input for HP points
         max_hp_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
         while True:
             try:
-                n_hp = int(input(f"\nCombien de points d'HP ? (maximum {max_hp_points}): "))
+                n_hp = int(input(f"\nCombien de points d'HP ❤️ ? (maximum {max_hp_points}): "))
                 if 0 <= n_hp <= max_hp_points:
                     break
                 else:
@@ -184,7 +180,7 @@ def create_character():
             max_atk_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
             while True:
                 try:
-                    n_atk = int(input(f"Combien de points d'ATK ? (maximum {max_atk_points}): "))
+                    n_atk = int(input(f"Combien de points d'ATK ⚔️ ? (maximum {max_atk_points}): "))
                     if 0 <= n_atk <= max_atk_points:
                         break
                     else:
@@ -201,7 +197,7 @@ def create_character():
             max_def_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
             while True:
                 try:
-                    n_def = int(input(f"Combien de points de DEF ? (maximum {max_def_points}): "))
+                    n_def = int(input(f"Combien de points de DEF 🛡️ ? (maximum {max_def_points}): "))
                     if 0 <= n_def <= max_def_points:
                         break
                     else:
@@ -213,7 +209,7 @@ def create_character():
             character.defense_value += n_def
             p_caracteristiques -= n_def
         os.system("cls")
-        tprint("SUDOQUEST")
+        tprint("DESCENTE")
         print(character)
         print("%s entre dans une cave sombre, à la recherche de l'aventure..." % character.name)
 
@@ -252,26 +248,29 @@ class Enemy(Character):
     def __init__(self, name, max_health, attack, defense, vitesse, dice):
         super().__init__(max_health, attack, defense, vitesse, dice)
         self.name = name
+    
+    def print_enemy(self):
+        print("ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️\n")
 
 class CrawlingVermin(Enemy):
     def __init__(self):
-        super().__init__("CrawlingVermin",10, 2, 1, 3, a_dice)
+        super().__init__("Gobelin",15, 6, 6, 3, a_dice)
 
 class ShadowStalker(Enemy):
     def __init__(self):
-        super().__init__("ShadowStalker",15, 3, 2, 4, a_dice)
+        super().__init__("Squelette",10, 8, 6, 4, a_dice)
 
 class VenomousSerpent(Enemy):
     def __init__(self):
-        super().__init__("VenomousSerpent",20, 4, 3, 5, a_dice)
+        super().__init__("Ogre",18, 10, 6, 5, a_dice)
 
 class DeathbringerScorpion(Enemy):
     def __init__(self):
-        super().__init__("DeathbringerScorpion",25, 5, 4, 6, a_dice)
+        super().__init__("PLACEHOLDER",25, 5, 4, 6, a_dice)
 
 class AbyssalHorror(Enemy):
     def __init__(self):
-        super().__init__("AbyssalHorror",30, 6, 5, 7, a_dice)
+        super().__init__("PLACEHOLDER2",30, 6, 5, 7, a_dice)
 
 if __name__ == "__main__":
     a_dice = Dice(6)
