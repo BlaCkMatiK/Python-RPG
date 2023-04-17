@@ -1,12 +1,13 @@
-from random import *
 from caracter import *
 import random
 from rich import print
-from screen import over
+from combat import battle
+from screen import over, wait_input
 import time
 from sounds import *
 from art import *
 from combat import *
+from inventaire import *
 
 
 a_dice=Dice(6)
@@ -14,8 +15,8 @@ a_dice=Dice(6)
 def help(self):
     os.system("cls")
     tprint("PAGE D'AIDE")
-    print("\nexplore pour avancer\nhp pour connaitre ses points de vie\nhelp pour voir cette page\n[italic]>>> signifie : Appuyez sur entrée pour continuer[italic]")
-    input(">>>")
+    print("\n[italic][bold]explore[bold] pour avancer\n[bold]hp[bold] pour connaitre ses points de vie\n[bold]help[bold] pour voir cette page\n[italic]")
+    wait_input()
 
 def explore(self):
     if self.status != "combat":
@@ -26,7 +27,7 @@ def explore(self):
         print(f"dé :{res}")
         if res == 1:
             print("Il y a un marchand !")
-            pass
+            wait_input()
         elif res > 1 and res <= 5:
             rencontre(self)
         elif res > 5 and res < 8:
@@ -35,6 +36,7 @@ def explore(self):
             piege(self)
         else:
             print("Ouf ! Il ne se passe rien dans cette salle")
+            wait_input()
     else:
         print("Vous ne pouvez pas partir comme ça")
 
@@ -48,6 +50,7 @@ def piege(self):
     sound_trap()
     time.sleep(1)
     print("Vous avez perdu 2hp :/ ")
+    wait_input()
     self.health = self.health - 2
     self.traps +=1
 
@@ -86,16 +89,6 @@ def rencontre(self):
         if not commandFound:
             print("%s ne comprend pas." % self.name)
 
-def random_enemy():
-    enemies = [CrawlingVermin(), ShadowStalker(), VenomousSerpent(), DeathbringerScorpion(), AbyssalHorror()]
-    return random.choice(enemies)
-
-def ajouter_or(self, quantite_or):
-        """ Ajoute de l'or à l'inventaire du personnage """
-        self.gold += quantite_or
-        print(
-            f"[yellow]{self.name} a trouvé {quantite_or} pièces d'or ![yellow]")
-
 def ouvrir_coffre(self):
         print("Vous avez trouvé un coffre !")
         choix=input("Voulez-vous l'ouvrir ? (Oui/Non)")
@@ -123,41 +116,13 @@ def ouvrir_coffre(self):
             print("Vous fermez le coffre")
             sound_chest_c()
             self.chests +=1
-            input(">>>")
-            os.system("cls")
+            wait_input()
         else:
             print("Vous n'avez pas ouvert ce coffre.")
-            input(">>>")
-            os.system("cls")
-
-def ajouter_arme(self, arme):
-        """ Ajoute une arme à l'inventaire du personnage """
-        self.armes.append(arme)
-        print(f"{self.name} a ajouté {arme} à son inventaire.")
-
-def ajouter_armure(self, armure):
-    """ Ajoute une armure à l'inventaire du personnage """
-    self.armures.append(armure)
-    print(f"{self.name} a ajouté {armure} à son inventaire.")
-
-def ajouter_potion(self, potion):
-    """ Ajoute une potion à l'inventaire du personnage """
-    self.potions.append(potion)
-    print(f"[purple]{self.name} a trouvé une {potion} ![/purple]")
-
-def afficher_inventaire(self):
-    """ Affiche l'inventaire complet du personnage """
-    print(f"Inventaire de {self.name}:")
-    print(f"- Or: {self.gold}")
-    print("- Armes: ")
-    for arme in self.armes:
-        print(f"  - {arme}")
-    print("- Armures: ")
-    for armure in self.armures:
-        print(f"  - {armure}")
+            wait_input()
 
 def loose_hp(player):
-    print(f"{player.health} - 10 = {player.health}")
+    print(f"{player.health} - 10 = {player.health - 100}")
     player.health -= 100
 
 def konami(self):
@@ -165,7 +130,8 @@ def konami(self):
 
 def choose_event(player):
     while (Character.is_alive(player)):
-        print("[italic]> help pour afficher l'aide[italic]\n")
+        tprint("CHOIX DE L'ACTION")
+        print("[italic][bold]help[bold] pour afficher l'aide[italic]\n")
         line = input(">> ")
         args = line.split()
         if len(args) > 0:
@@ -176,6 +142,7 @@ def choose_event(player):
                     commandFound = True
                     break
             if not commandFound:
+                os.system("cls")
                 print("%s ne comprend pas." % player.name)
     print(f"{player.name} n'a plus de vie !")
     time.sleep(2)
@@ -185,6 +152,7 @@ def over_e(player):
     over()
 
 Commands = {
+    'stats': stats,
     # 'quit': Player.quit,
     'help': help,
     # 'status': Player.status,
@@ -194,11 +162,14 @@ Commands = {
     'fuite': fuite,
     'combat': battle,
     'hp': Character.show_health,
+    'xp': Character.show_xp,
+    '+xp': ajouter_xp,
     'inventaire': afficher_inventaire,
     'loose': loose_hp,
-    'konami': konami
+    'konami': konami,
+    'fight': battle
 }
 
 if __name__ == "__main__":
     self = create_character()
-    rencontre(self)
+    ouvrir_coffre(self)
