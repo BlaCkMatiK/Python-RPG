@@ -3,11 +3,10 @@ import os
 import random
 import time
 
-
 from caracter import *
 from dice import Dice
 from evenement import *
-from screen import *
+from screen import startup, story
 import signal
 import threading
 from sounds import *
@@ -22,7 +21,7 @@ def handle_signal(signal_num, frame):
 signal.signal(signal.SIGINT, handle_signal)
 
 def start():
-    title()    
+    startup()    
     sound_create()
     story()
 

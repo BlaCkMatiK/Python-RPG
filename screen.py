@@ -31,11 +31,10 @@ def wait_input_blank():
     sound_ok()
     time.sleep(1)
 
-
 def stats(self):
     os.system("cls")
     tprint(f"STATS DE {self.name}")
-    print(f"ATK : {self.attack_value}\nDEF : {self.defense_value}\nVIT : {self.vitesse}\n")
+    print(f"ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️\n")
     Character.show_health(self)
     Character.show_xp(self)
     wait_input()
@@ -102,8 +101,9 @@ def startup():
 def story():
     os.system("cls")
     tprint("SUDOQUEST\n")
+    histoire2 = ("Le but est de s'aventurer dans le mystérieux Sudo-Quest en utilisant les commandes du jeu.; Les donjons sont rempli d'événements aléatoires comme des coffres, des pièges et des combats avec des monstres féroces.; Les ennemis incluent des créatures terrifiantes telles que les Vermines Rampantes, les Rôdeurs des Ombres, les Serpents Venimeux, les Scorpions Tueurs et les Horreurs Abyssales, ainsi que des boss redoutables tels que le Kraken et le Dragon.; Le joueur doit améliorer les compétences de son personnage en attribuant des points à ses points de vie, ses attaques et ses défenses et collecter de l'or pour acheter de nouvelles armes et armures pour devenir le héros légendaire plong'éco de cette quête fantastique.")
     histoire = ("Bienvenue dans la mystérieuse aventure Sudo-Quest, où une grande aventure vous attend !; Vous êtes un courageux aventurier, prêt à affronter les dangers et les défis qui se trouvent dans les profondeurs de ce labyrinthe obscur.; Vous aurez la possibilité de créer votre propre personnage en choisissant parmi quatre classes distinctes :;     Mage, Voleur, Warrior ou Looser.; Chaque classe a ses propres compétences et attributs uniques, ce qui influencera votre style de jeu et votre approche des combats.; Le donjon est rempli d'événements aléatoires qui pimenteront votre aventure :; Vous pourrez tomber sur des coffres remplis de richesses, des pièges sournois qui vous causeront des blessures, ou encore des monstres féroces.; Les combats sont intenses et vous devrez utiliser vos compétences et votre stratégie pour vaincre vos ennemis et protéger votre vie.; Parmi les ennemis que vous rencontrerez, il y aura des créatures terrifiantes telles que :;     Les Vermines Rampantes, les Rôdeurs des Ombres, les Serpents Venimeux, les Scorpions Tueurs et les Horreurs Abyssales.; Et attention aux terribles boss qui vous défieront, comme le Kraken et le Dragon !; En progressant dans le donjon, vous pourrez améliorer les compétences de votre personnage en vous attribuant des points de caractéristique.; Vous pourrez également collecter de l\'or pour acheter de nouvelles armes et armures, et constituer un inventaire d\'objets puissants pour vous aider !; Attention, chaque décision que vous prendrez dans le donjon Sudo peut avoir des conséquences sur votre aventure, choisissez sagement !; Préparez-vous à une aventure épique dans un monde médiéval rempli de mystères, de trésors et de dangers et devenez un héros !; Que la chance vous accompagne, brave aventurier, dans votre quête pour conquérir le Sudo-Quest et accomplir votre destinée !; Utilisez help en jeu pour obtenir la liste des commandes disponibles.")
-    string = histoire.replace("; ", "\n\n")
+    string = histoire2.replace("; ", "\n\n")
 
     for letter in string:
         print(letter, end="")
