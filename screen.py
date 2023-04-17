@@ -6,6 +6,39 @@ import sys
 import signal
 from sounds import *
 import pyfiglet
+from rich.prompt import Prompt
+from caracter import *
+
+def wait_input():
+    print("\n[italic]Appuyez sur Entrée pour continuer ...[italic]")
+    input()
+    sound_ok()
+    time.sleep(1)
+    os.system("cls")
+
+def wait_input_turn():
+    print("\n[italic]Appuyez sur Entrée pour passer au tour suivant ...[italic]")
+    input()
+
+def wait_input_pass():
+    print("\n[italic]Appuyez sur Entrée pour continuer ...[italic]")
+    input()
+    sound_ok()
+    time.sleep(1)
+
+def wait_input_blank():
+    input()
+    sound_ok()
+    time.sleep(1)
+
+
+def stats(self):
+    os.system("cls")
+    tprint(f"STATS DE {self.name}")
+    print(f"ATK : {self.attack_value}\nDEF : {self.defense_value}\nVIT : {self.vitesse}\n")
+    Character.show_health(self)
+    Character.show_xp(self)
+    wait_input()
 
 def loading():
     terminal_size = os.get_terminal_size()
@@ -63,8 +96,7 @@ def startup():
     time.sleep(2.5)
     tprint("                           le jeu")
     time.sleep(3)
-    print("Appuyez sur Entrée pour continuer ...")
-    input("")
+    wait_input()
     quit_pygame()
 
 def story():
@@ -76,7 +108,7 @@ def story():
     for letter in string:
         print(letter, end="")
         time.sleep(0.005)
-    input()
+    wait_input_blank()
 
 def title():
     #loading()
@@ -158,8 +190,9 @@ def print_game_over():
     text = "GAMEOVER!"
 
     for char in text:
-        ascii_art = pyfiglet.figlet_format(char)
-        print(ascii_art, end='')
+        # ascii_art = pyfiglet.figlet_format(char)
+        # print(ascii_art, end='')
+        print(char, end="")
         time.sleep(0.5)
     time.sleep(2)
 
