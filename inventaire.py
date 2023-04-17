@@ -7,12 +7,10 @@ import random
 def ajouter_caracteristique(self, p_caracteristiques):
     while p_caracteristiques > 0:
         print(f"Vous avez obtenu {p_caracteristiques} points de caractéristiques !")
-        print(f"Statistiques actuelles :\n(ATK : {character.attack_value} ⚔️ / DEF : {character.defense_value}🛡️ / VIT : {character.vitesse}⚡️)\n")
+        print(f"Statistiques actuelles :\n(ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️)\n")
         print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer :[italic]")
 
-
-        # Request input for HP points
-        max_hp_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
+        max_hp_points = min(p_caracteristiques, 10)
         while True:
             try:
                 n_hp = int(input(f"\nCombien de points d'HP ? (maximum {max_hp_points}): "))
@@ -28,8 +26,7 @@ def ajouter_caracteristique(self, p_caracteristiques):
         p_caracteristiques -= n_hp
 
         if p_caracteristiques > 0:
-            # Request input for ATK points
-            max_atk_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
+            max_atk_points = min(p_caracteristiques, 10)
             while True:
                 try:
                     n_atk = int(input(f"Combien de points d'ATK ? (maximum {max_atk_points}): "))
@@ -45,8 +42,7 @@ def ajouter_caracteristique(self, p_caracteristiques):
             p_caracteristiques -= n_atk
 
         if p_caracteristiques > 0:
-            # Request input for DEF points
-            max_def_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
+            max_def_points = min(p_caracteristiques, 10)
             while True:
                 try:
                     n_def = int(input(f"Combien de points de DEF ? (maximum {max_def_points}): "))

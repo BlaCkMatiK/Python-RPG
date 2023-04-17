@@ -266,29 +266,14 @@ def choose_event(player):
     print(f"{player.name} n'a plus de vie !")
     time.sleep(2)
     quit_pygame()
-    
-def over_e(player):
-    over()
 
 Commands = {
     'stats': stats,
-    # 'quit': Player.quit,
     'help': help,
-    # 'status': Player.status,
-    # 'rest': Player.rest,
-    'over': over_e,
     'explore': explore,
     'fuite': fuite,
     'combat': battle,
-    'hp': Character.show_health,
-    'xp': Character.show_xp,
-    '+xp': ajouter_xp,
     'inventaire': afficher_inventaire,
     'loose': loose_hp,
     'konami': konami,
-    'fight': battle
 }
-
-if __name__ == "__main__":
-    self = create_character()
-    ouvrir_coffre(self)
