@@ -14,7 +14,7 @@ a_dice=Dice(6)
 def help(self):
     os.system("cls")
     tprint("PAGE D'AIDE")
-    print("[italic]explore pour avancer[italic]\nVous pouvez tomber sur les évenements suivants :\n -Combat (X%)\n -Coffre (X%)\n -Salle vide (X%)\n -Piege (X%)\n -Marchand (X%)\n -Couloir secret (X%) ")
+    print("[italic]explore pour avancer[italic]\nVous pouvez tomber sur les évenements suivants :\n -Combat (40%)\n -Coffre (20%)\n -Salle vide (10%)\n -Piege (10%)\n -Marchand (10%)\n -Couloir secret (10%) ")
     print("\n""[#C39BD3]hp[#C39BD3]"" pour connaitre ses points de vie\n""[#C39BD3]help[#C39BD3]"" pour voir cette page\n""[#C39BD3]inventaire[#C39BD3]"" pour ouvrir l'inventaire[italic]")
     print("")
     print("[italic]lorsque un combat est lancé, vous pouvez essayer de fuire avec [#C39BD3]fuite[#C39BD3]")
@@ -25,9 +25,9 @@ def explore(self):
         self.steps += 1
         print("%s explore un passage étroit." % self.name)
         time.sleep(1)
-        res = randint(1, 100)
-        print(f"dé :{res}")
-        if res > 10:
+        res = randint(1, 10)
+        print(f"Dé : {res}")
+        if res <= 1:
             marchand(self)
         elif res > 1 and res <= 5:
             rencontre(self)
