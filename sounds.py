@@ -82,6 +82,21 @@ def sound_ok():
     sounds_ok = pygame.mixer.Sound('sounds/ok.wav')
     sounds_ok.play()
 
+def sound_marchand():
+    sound_init()
+    sounds_marchand = pygame.mixer.Sound('sounds/marchand.wav')
+    sounds_marchand.play()
+
+def sound_shop():
+    sound_init()
+    sounds_shop = pygame.mixer.Sound('sounds/shop.wav')
+    sounds_shop.play(loops=-1)
+
+def sound_level_up():
+    sound_init()
+    sounds_level_up = pygame.mixer.Sound('sounds/level_up.wav')
+    sounds_level_up.play(loops=-1)
+
 def quit_pygame():
     pygame.mixer.quit()
     pygame.quit()
