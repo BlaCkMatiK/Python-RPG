@@ -48,22 +48,23 @@ def battle(self):
             quantite_or = randint(0, 5)
             wait_input_pass()
             ajouter_or(self, quantite_or)
-            #xp = randint(3,10)
+            xp = randint(3,10)
             wait_input_pass()
-            ajouter_xp(self, 25)
+            ajouter_xp(self, xp)
             self.vitesse = self.vitesse_T
             self.kills +=1
-            wait_input_pass()
-            quit_pygame()
+            
             if tour == 0 :
                 self.OHKO +=1
                 time.sleep(0.1)
                 sound_OHKO()
                 print(f"[red]C'est un one-shot ![red]")
-                wait_input()
+                wait_input_pass()
                 os.system("cls")
             if tour > self.tours_max:
                 self.tours_max = tour
+            wait_input()
+            quit_pygame()    
             sound_bgm()
     else:
         print("Mais t'es con t'es pas en combat")
