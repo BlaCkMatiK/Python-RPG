@@ -5,13 +5,11 @@ from screen import *
 import random
 
 def ajouter_caracteristique(self, p_caracteristiques):
-    print(f"Vous avez obtenu {p_caracteristiques} points de caractéristiques !")
     while p_caracteristiques > 0:
-        print("Statistiques actuelles :")
-        print(" Points de vie :", self.max_health)
-        print(" Attaque :", self.attack_value)
-        print(" Défense :", self.defense_value)
-        print("Vitesse :", self.vitesse)
+        print(f"Vous avez obtenu {p_caracteristiques} points de caractéristiques !")
+        print(f"Statistiques actuelles :\n(ATK : {character.attack_value} ⚔️ / DEF : {character.defense_value}🛡️ / VIT : {character.vitesse}⚡️)\n")
+        print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer :[italic]")
+
 
         # Request input for HP points
         max_hp_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
@@ -62,7 +60,6 @@ def ajouter_caracteristique(self, p_caracteristiques):
 
             self.defense_value += n_def
             p_caracteristiques -= n_def
-    wait_input()
 
 def ajouter_or(self, quantite_or):
         """ Ajoute de l'or à l'inventaire du personnage """
@@ -92,13 +89,16 @@ def ajouter_xp(self, xp):
         self.level += 1
         level_t +=1
         self.p_experience -= 10
+        sound_level_up()
+        wait_input()
         print(f"[blue]{self.name} a atteint le niveau {self.level} ![blue]")
+
     ajouter_caracteristique(self, level_t)
 
 def afficher_inventaire(self):
     """ Affiche l'inventaire complet du personnage """
     os.system("cls")
-    tprint(f"Inventaire de {self.name}:")
+    tprint(f"INVENTAIRE DE  {self.name}:")
     print(f"- Or: {self.gold}")
     print("- Armes: ")
     for arme in self.armes:
