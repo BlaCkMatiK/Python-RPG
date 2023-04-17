@@ -14,8 +14,9 @@ from sounds import *
 
 def handle_signal(signal_num, frame):
     os.system("cls")
-    print("Fermeture du jeu prématurée par l'utilisateur (Ctrl+C) \n1 sec. avant fermeture")
+    print("Fermeture du jeu prématurée par l'utilisateur (Ctrl+C) \n2 sec. avant fermeture")
     time.sleep(1)
+    os.system("cls")
     exit(0)
 
 signal.signal(signal.SIGINT, handle_signal)
@@ -30,6 +31,7 @@ def main():
     quit_pygame()
     sound_enter()
     time.sleep(10)
+    os.system("cls")
     sound_bgm()
     #stats(player)
     while Character.is_alive(player):
