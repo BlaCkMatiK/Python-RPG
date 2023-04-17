@@ -1,9 +1,10 @@
 import os
-import random
+#from screen import *
 import time
 from rich import *
 from random import *
 from sounds import sound_hit
+from art import *
 
 from dice import Dice, RiggedDice
 
@@ -33,6 +34,8 @@ class Character:
         self.chests = 0
         self.OHKO = 0
         self.traps = 0
+        self.level = 1
+        self.p_experience = 0
 
     def __str__(self):
         return f"{self.name} le {type(self).type} descend dans le donjon avec {self.max_health}hp, {self.attack_value} atk et {self.defense_value} def\n"
@@ -59,6 +62,7 @@ class Character:
         for i in range(self.health, self.max_health):
             print("🖤", end="")
         print(f"  ({self.health} / {self.max_health})\n")
+        #wait_input()
 
     def show_health2(self):
         missing_health = self.max_health - self.health
@@ -101,23 +105,36 @@ class Character:
         self.show_health()
         #time.sleep(2)
 
+    def show_xp(self):
+        #print("[",end="\r")
+        emoji = "🔵"        
+        print(f"Niveau {self.level}")
+        for i in range(0, self.p_experience):
+            print(emoji,end="")
+        for i in range(self.p_experience, 10):
+            print("⚫", end="")
+        print(f" ({self.p_experience} / 10)\n")
+
 def turn():
     pass
 
 def create_character():
     os.system("cls")
+    tprint("CREATION DE PERSONNAGE")
     name = input("Le nom de votre personnage ? \n \n-> : ")
     valid_inputs = ["1", "2", "3", "4"]
     os.system("cls")
     
     while True:
         try:
+            tprint("CREATION DE PERSONNAGE")
             print(f"[pink]{name}[pink], choisissez votre classe (hp ❤️ / atk ⚔️ / def 🛡️ / vit 💨): ")
             classe = input(f"\n\n*************\n\n1. Warrior (20 ❤️ / 8 ⚔️ / 5 🛡️ / 2 💨) \n\n2. Mage (15 ❤️ / 10 ⚔️ / 10 🛡️ / 2 💨) \n\n3. Thief (10 ❤️ / 10 ⚔️ / 10 🛡️ / 10 💨) \n\n4. Looser (1 ❤️ / 1 ⚔️ / 1 🛡️ / 1 💨) \n \n-> : ")
             if str(classe) not in valid_inputs:
                 raise ValueError
             break
         except ValueError:
+            tprint("CREATION DE PERSONNAGE")
             os.system("cls")
             print("Veuillez saisir une valeur entre 1 et 4 !\n")
 
@@ -132,6 +149,7 @@ def create_character():
     character.name = name
     
     os.system("cls")
+    tprint("CREATION DE PERSONNAGE")
     print("Bonjour " + Character.get_name(character) + " le " + Character.get_type(character) + "!\n")
     
     p_caracteristiques=10
@@ -141,6 +159,8 @@ def create_character():
         print(" Points de vie :", character.max_health)
         print(" Attaque :", character.attack_value)
         print(" Défense :", character.defense_value)
+        print("Vitesse :", character.vitesse)
+        print(f"Vous avez {p_caracteristiques} points de caractéristique à attribuer :")
 
         # Request input for HP points
         max_hp_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
@@ -193,10 +213,11 @@ def create_character():
             character.defense_value += n_def
             p_caracteristiques -= n_def
         os.system("cls")
+        tprint("SUDOQUEST")
         print(character)
         print("%s entre dans une cave sombre, à la recherche de l'aventure..." % character.name)
 
-        return character
+    return character
 
 def stats(character):
     print("TEST")
