@@ -95,7 +95,7 @@ def sound_shop():
 def sound_level_up():
     sound_init()
     sounds_level_up = pygame.mixer.Sound('sounds/level_up.wav')
-    sounds_level_up.play(loops=-1)
+    sounds_level_up.play()
 
 def quit_pygame():
     pygame.mixer.quit()

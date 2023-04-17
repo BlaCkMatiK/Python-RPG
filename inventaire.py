@@ -4,10 +4,15 @@ from art import *
 from screen import *
 import random
 
+class Inventaire:
+    pass
+
 def ajouter_caracteristique(self, p_caracteristiques):
     while p_caracteristiques > 0:
-        print(f"Vous avez obtenu {p_caracteristiques} points de caractéristiques !")
-        print(f"Statistiques actuelles :\n(ATK : {character.attack_value} ⚔️ / DEF : {character.defense_value}🛡️ / VIT : {character.vitesse}⚡️)\n")
+        tprint("LEVEL UP !")        
+        print(f"[blue]{self.name} a atteint le niveau {self.level} ![blue]\n")
+        print(f"Vous avez obtenu {p_caracteristiques} points de caractéristiques !\n")
+        print(f"Statistiques actuelles :\n(ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️)\n")
         print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer :[italic]")
 
 
@@ -91,8 +96,6 @@ def ajouter_xp(self, xp):
         self.p_experience -= 10
         sound_level_up()
         wait_input()
-        print(f"[blue]{self.name} a atteint le niveau {self.level} ![blue]")
-
     ajouter_caracteristique(self, level_t)
 
 def afficher_inventaire(self):

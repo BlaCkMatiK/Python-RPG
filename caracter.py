@@ -3,7 +3,7 @@ import os
 import time
 from rich import *
 from random import *
-from sounds import sound_hit
+from sounds import *
 from art import *
 
 from dice import Dice, RiggedDice
@@ -23,6 +23,7 @@ class Character:
         self.status = "normal"
         self.discrétion = 5
         self.vitesse = vitesse
+        self.defending = False
         self.vitesse_T = 0
         self.gold = 0
         self.armures = []
@@ -64,11 +65,6 @@ class Character:
         print(f"  ({self.health} / {self.max_health})\n")
         #wait_input()
 
-    def show_health2(self):
-        missing_health = self.max_health - self.health
-        health_bar = f"Barre de vie de {self.name} : [{'●'*self.health}{'○'*missing_health}] {self.health}/{self.max_health}hp\n"
-        print(health_bar)
-
     def get_type(self):
         return type(self).type
 
@@ -88,14 +84,17 @@ class Character:
             damages = self.compute_damages(roll, target)    
             print(f"ATTAQUE ⚔️\n     [red]{self.get_name()} attaque[/red] avec {damages} dommages (attack: {self.attack_value} + dé {roll})")
             sound_hit()
-            target.defend(damages)
+            target.encaisse(damages)
 
-    def compute_defense(self, roll, damages):
+    def defendre(self):
+        self.defending = True
+
+    def compute_encaisse(self, roll, damages):
         return damages - roll - self.defense_value
 
-    def defend(self, damages):
+    def encaisse(self, damages):
         roll = self.dice.roll()
-        wounds = self.compute_defense(roll, damages)
+        wounds = self.compute_encaisse(roll, damages)
         if wounds < 0:
             wounds = 0
         print(f"DEFENSE🛡️\n     [blue]{self.get_name()} se défend[/blue] contre {damages} dommages et en prends {wounds}. ({damages} dommages - défense {self.defense_value} - dé {roll})", end="\n")
@@ -115,8 +114,13 @@ class Character:
             print("⚫", end="")
         print(f" ({self.p_experience} / 10)\n")
 
-def turn():
-    pass
+    def choose_action(self):
+        while True:
+            action = input(f"{self.name}, choisis ton action du tour :\n\n  1. Attaquer \n  2. Défendre\n  3. Potions\n")
+            if action in ["1", "2", "3"]:
+                return action
+            else :
+                print("Action invalide.")
 
 def create_character():
     os.system("cls")
@@ -155,7 +159,7 @@ def create_character():
     p_caracteristiques=10
 
     while p_caracteristiques > 0:
-        print(f"Statistiques actuelles :\n(ATK : {character.attack_value} ⚔️ / DEF : {character.defense_value}🛡️ / VIT : {character.vitesse}⚡️)\n")
+        print(f"Statistiques actuelles :\n(HP : {character.health} ❤️ / ATK : {character.attack_value} ⚔️ / DEF : {character.defense_value}🛡️ / VIT : {character.vitesse}⚡️)\n")
         print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer :[italic]")
 
         # Request input for HP points
@@ -215,10 +219,6 @@ def create_character():
 
     return character
 
-def stats(character):
-    print("TEST")
-    print(f"{character.get_name()}, {character.show_health()}") 
-
 class Warrior(Character):
     type = "Warrior"
 
@@ -251,6 +251,16 @@ class Enemy(Character):
     
     def print_enemy(self):
         print("ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️\n")
+
+    def choose_turn(self, target):
+        choice = randint(1,3)
+        if choice == "1" :
+            print(f"{self.name} a choisi d'attaquer !")
+            self.attack(target)
+        elif choice == "2" :
+            pass
+        elif choice == "3" :
+            pass
 
 class CrawlingVermin(Enemy):
     def __init__(self):

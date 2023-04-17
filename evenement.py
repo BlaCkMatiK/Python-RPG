@@ -1,12 +1,11 @@
 from caracter import *
 import random
 from rich import print
-from combat import battle
 from screen import over, wait_input
 import time
 from sounds import *
 from art import *
-from combat import *
+from combat import Combat
 from inventaire import *
 
 a_dice=Dice(6)
@@ -14,7 +13,7 @@ a_dice=Dice(6)
 def help(self):
     os.system("cls")
     tprint("PAGE D'AIDE")
-    print("[italic]explore pour avancer[italic]\nVous pouvez tomber sur les évenements suivants :\n -Combat (40%)\n -Coffre (20%)\n -Salle vide (10%)\n -Piege (10%)\n -Marchand (10%)\n -Couloir secret (10%) ")
+    print("[italic]explore pour avancer[italic]\nVous pouvez tomber sur les évenements suivants :\n -Combat (40%)\n -Coffre (20%)\n -Salle vide (10%)\n -Piege (10%)\n -Marchand (10%)\n -Couloir secret (10%)\n    -Boss (60%)\n    -Coffre (20%)\n    -Marchand (20%) ")
     print("\n""[#C39BD3]hp[#C39BD3]"" pour connaitre ses points de vie\n""[#C39BD3]help[#C39BD3]"" pour voir cette page\n""[#C39BD3]inventaire[#C39BD3]"" pour ouvrir l'inventaire[italic]")
     print("")
     print("[italic]lorsque un combat est lancé, vous pouvez essayer de fuire avec [#C39BD3]fuite[#C39BD3]")
@@ -49,7 +48,7 @@ def couloir(self):
 
 def marchand(self):
     print("Il y a un marchand !")
-    choix=input("Rentrer dans le magasin ? (Oui/Non)")
+    choix=input("Rentrer dans le magasin ? (Oui/Non) - ")
     if choix.lower().startswith("o"):
         quit_pygame()
         print("Vous entrez dans le magasin")
@@ -75,7 +74,7 @@ def marchand(self):
             os.system("cls")
             tprint("MARCHAND - ARMES")
             print("1 - Epee en bois       10 or\n2 - Epee en fer       20 or\n3 - Epee en or       30 or\n4 - Epee en diams       40 or\n")
-            choix=input("Que voulez vous acheter  ?")
+            choix=input("Que voulez vous acheter  ? - ")
             if choix.lower().startswith("1"):
                 print("Vous avez acheté une epee en bois")
                 #Verif que le player a assez de thune 
@@ -105,7 +104,7 @@ def marchand(self):
             print("2 - Armure en fer       20 or")
             print("3 - Armure en or       30 or")
             print("4 - Armure en diams       40 or")
-            choix=input("Que voulez vous acheter  ?")
+            choix=input("Que voulez vous acheter  ? - ")
             if choix.lower().startswith("1"):
                 print("Vous avez acheté une Armure en bois")
                 #Verif que le player a assez de thune 
@@ -132,7 +131,7 @@ def marchand(self):
             os.system("cls")
             tprint("MARCHAND - SOINS")
             print("1 - Potion de soin       10 or")
-            choix=input("Que voulez vous acheter  ?")
+            choix=input("Que voulez vous acheter  ? - ")
                 
             if choix.lower().startswith("1"):
                 print("Vous avez acheté une Potion de soin")
@@ -154,7 +153,6 @@ def marchand(self):
             print("Le marchant vous souhaite une bonne journée !")
         elif var_2 == 1:
             print("Oh le rat")
-        wait_input()
     wait_input()
 
 def piege(self):
@@ -210,7 +208,7 @@ def rencontre(self):
 
 def ouvrir_coffre(self):
         print("Vous avez trouvé un coffre !")
-        choix=input("Voulez-vous l'ouvrir ? (Oui/Non)")
+        choix=input("Voulez-vous l'ouvrir ? (Oui/Non) - ")
         if choix.lower().startswith("o"):
             print("Le coffre s'ouvre ...")
             sound_chest_o()
@@ -279,14 +277,13 @@ Commands = {
     'over': over_e,
     'explore': explore,
     'fuite': fuite,
-    'combat': battle,
+    'combat': Combat.battle,
     'hp': Character.show_health,
     'xp': Character.show_xp,
     '+xp': ajouter_xp,
     'inventaire': afficher_inventaire,
     'loose': loose_hp,
     'konami': konami,
-    'fight': battle
 }
 
 if __name__ == "__main__":
