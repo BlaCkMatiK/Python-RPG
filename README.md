@@ -26,10 +26,10 @@ SudoQuest nécessite certaines libraires de Python pour fonctionner :
 pip install rich pygame pyfiglet art
 ```
 
-A l'heure actuelle, le fichier **engine.py** doit être exécuté depuis un terminal.
+A l'heure actuelle, le fichier **sudoquest.py** doit être exécuté depuis un terminal.
 
 ```sh
-python engine.py
+python sudoquest.py
 ```
 
 Nous essayerons de compiler proprement le jeu pour le transformer en **.exe**
