@@ -1,5 +1,4 @@
 from rich import *
-from caracter import Character
 from art import *
 from screen import *
 import random
