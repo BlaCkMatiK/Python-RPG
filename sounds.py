@@ -1,7 +1,5 @@
 
 import pygame
-import threading
-import winsound
 
 def sound_init():
     pygame.init()
@@ -100,7 +98,3 @@ def sound_level_up():
 def quit_pygame():
     pygame.mixer.quit()
     pygame.quit()
-
-if __name__ == "__main__":
-    sound_init()
-    sound_create()

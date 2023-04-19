@@ -93,6 +93,7 @@ def story():
         time.sleep(0.005)
     wait_input_blank()
 
+<<<<<<< HEAD
 def title():
     #loading()
     startup()
@@ -110,6 +111,21 @@ def title():
 #         pass
 #     else :
 #         exit(0)
+=======
+def over():
+    quit_pygame()
+    time.sleep(3)
+    signal.signal(signal.SIGINT, over)
+    sound_game_over()
+    tprint("GAME OVER !!")
+    #sys.stdout.flush()
+    time.sleep(5)
+    fin = input("Rejouer ? (Oui/Non)")
+    if fin.lower().startswith("o"):
+        pass
+    else :
+        exit(0)
+>>>>>>> main
 
 def end_stats(self):
     os.system("cls")
@@ -134,6 +150,7 @@ def print_game_over():
         # print(ascii_art, end='')
         print(char, end="")
         time.sleep(0.5)
+<<<<<<< HEAD
     time.sleep(2)
 
 if __name__ == "__main__":
@@ -142,4 +159,7 @@ if __name__ == "__main__":
 
 
                                                                
+=======
+    time.sleep(2)                                                      
+>>>>>>> main
                                                                

@@ -1,6 +1,4 @@
-#import rich
 import os
-import random
 import time
 
 from caracter import create_character
@@ -8,7 +6,6 @@ from dice import Dice
 from evenement import *
 from screen import *
 import signal
-import threading
 from sounds import *
 
 from commandes import Commandes
@@ -16,20 +13,25 @@ from inventaire import Inventaire
 
 def handle_signal(signal_num, frame):
     os.system("cls")
-    print("Fermeture du jeu prématurée par l'utilisateur (Ctrl+C) \n2 sec. avant fermeture")
+    print(
+        "Fermeture du jeu prématurée par l'utilisateur (Ctrl+C) \n2 sec. avant fermeture"
+    )
     time.sleep(1)
     os.system("cls")
     exit(0)
 
+
 signal.signal(signal.SIGINT, handle_signal)
 
+
 def start():
-    startup()    
+    startup()
     sound_create()
     if Entree("Passer histoire ? (Oui / Non)", "> ").run().lower().startswith("o"):
         pass
     else :
         story()
+
 
 def main():
     player_b = create_character()
@@ -48,8 +50,8 @@ def main():
     end_stats(player_b)
     main()
 
+
 if __name__ == "__main__":
     start()
     while True:
         main()
-    
