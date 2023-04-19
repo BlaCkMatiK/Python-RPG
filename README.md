@@ -31,6 +31,7 @@ Le jeu à été développé sous **Python 3.11** .
   - L'inventaire
   - Les objets
   - Les combats
+  - Les input
 
 - Certaines parties ont été codées de manière **procédurale** :  
 
@@ -93,10 +94,10 @@ Le joueur peut trouver **équipement** et **potions** afin de l'aider dans son a
 ### Must
 
 - Un écran titre  ✔️
-- Un écran de Game Over  ⏳
+- Un écran de Game Over  ✔️
 - Différents monstres  ✔️
-- Couloirs secrets  ⏳  
-  - Boss  
+- Couloirs secrets  ✔️  
+  - Boss  ✔️
 
 ### Should
 
@@ -107,7 +108,7 @@ Le joueur peut trouver **équipement** et **potions** afin de l'aider dans son a
 
 - Musiques  ✔️
 - Sons d'ambiance ✔️
-- Combat avec choix d'action  ⏳
+- Combat tour par tour avec **choix** d'action  ⏳
   - *Attaque, défense ou soin*  
 - Bonus de classes :  
   - *Par arme (arcs pour Achers, ...)*  ✔️
@@ -122,6 +123,6 @@ Le joueur peut trouver **équipement** et **potions** afin de l'aider dans son a
   - *.json*
 - Joueurs AI  ⏳
 - Changements par gain d'XP
-  - *Sorts*  ⏳
+  - *Sorts ?* ⏳
   - *Points de compétences*  ✔️
   - *Ennemis + puissants*  ⏳
