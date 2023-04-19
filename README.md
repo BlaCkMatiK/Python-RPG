@@ -100,26 +100,28 @@ Le joueur peut trouver **équipement** et **potions** afin de l'aider dans son a
 
 ### Should
 
-- Equipement  ⏳
+- Equipement  ✔️  
 - Expérience / Niveaux  ✔️
-  - *Ennemis + puissants*
 
 ### Could
 
+- Musiques  ✔️
+- Sons d'ambiance ✔️
 - Combat avec choix d'action  ⏳
   - *Attaque, défense ou soin*  
-- Bonus de classes : ⏳
-  - *Par arme (arcs pour Achers, ...)*  ⏳
+- Bonus de classes :  
+  - *Par arme (arcs pour Achers, ...)*  ✔️
   - *Par classe (saignement pour Warior, ...)*  ⏳
-- Magasin d'achat d'items  ⏳
+- Magasin d'achat d'items  ✔️  
 
 ### Would
 
-- Musiques  ✔️
-- Sons d'ambiance ✔️
 - Meilleur affichage ⏳
   - *librairires comme **pygame** ou **curses***  
 - Sauvegarde + Tableau des scores ⏳
   - *.json*
 - Joueurs AI  ⏳
-- Sorts et compétences par gain d'XP  ⏳
+- Changements par gain d'XP
+  - *Sorts*  ⏳
+  - *Points de compétences*  ✔️
+  - *Ennemis + puissants*  ⏳
