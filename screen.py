@@ -2,10 +2,8 @@ import os
 import time
 from art import *
 from rich import *
-import sys
 import signal
 from sounds import *
-import pyfiglet
 from rich.prompt import Prompt
 from caracter import *
 
@@ -16,12 +14,18 @@ def wait_input():
     time.sleep(1)
     os.system("cls")
 
+def wait_input_start():
+    print("\n[italic]Appuyez sur Entrée pour continuer ...[italic]")
+    input()
+    sound_ok()
+    time.sleep(1)
+
 def wait_input_turn():
     print("\n[italic]Appuyez sur Entrée pour passer au tour suivant ...[italic]")
     input()
 
 def wait_input_pass():
-    print("\n[italic]vvv[italic]")
+    print("[italic]> [italic]")
     input()
     sound_ok()
     time.sleep(1)
@@ -35,8 +39,8 @@ def stats(self):
     os.system("cls")
     tprint(f"STATS DE {self.name}")
     print(f"ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️\n")
-    Character.show_health(self)
-    Character.show_xp(self)
+    self.show_health()
+    self.show_xp()
     wait_input()
 
 def startup():
@@ -46,7 +50,7 @@ def startup():
     time.sleep(2.5)
     tprint("                           le jeu")
     time.sleep(3)
-    wait_input()
+    wait_input_start()
     quit_pygame()
 
 def story():
@@ -82,9 +86,10 @@ def over():
 def end_stats(self):
     os.system("cls")
     tprint("GAME OVER")
-    print(f"STATISTIQUES DE LA PARTIE DE {self.name} :\nClasse : {self.type}\n")
-    print(f"\nVous avez vaincu {self.kills} ennemis !\nVotre plus long combat à duré {self.tours_max} tours !\nVOus avez one-tap {self.OHKO} ennemis !\nVous avez ouvert {self.chests} coffres !\nVous avez accumulé {self.gold} or !\nVous avez \"exploré\" {self.steps} fois !\nVous êtes tombé dans {self.traps} pièges !\n")
-    fin = input("\nRejouer ? (Oui/Non)")
+    print(f"STATISTIQUES DE LA PARTIE DE {self.name} :\n")
+    print(self.stats_print_carac())
+    print(f"\n\nVous avez vaincu {self.kills} ennemis !\nVotre plus long combat à duré {self.tours_max} tours !\nVOus avez one-tap {self.OHKO} ennemis !\nVous avez ouvert {self.chests} coffres !\nVous avez accumulé {self.gold} or !\nVous avez \"exploré\" {self.steps} fois !\nVous êtes tombé dans {self.traps} pièges !\n")
+    fin = input("\nRejouer ? (Oui/Non)\n> ")
     if fin.lower().startswith("o"):
         pass
     else :
