@@ -5,6 +5,7 @@ from art import *
 from random import choice
 from screen import *
 from inventaire import *
+import math
 
 class Combat:
     def __init__(self, player, equip, enemy):
@@ -56,7 +57,11 @@ class Combat:
                 tprint("COMBAT - VICTOIRE!")
                 print(f"[green]Vous avez gagné ce combat ![green]")                
                 Entree("...","", False).run()
-                quantite_or = randint(0, 5)
+                quantite_or = randint(1, 5)
+                if player.type == "Thief":
+                    print("[yellow](Bonus : Roublardise du voleur ! Or x2)[yellow]")
+                    quantite_or *=2.5
+                    quantite_or = math.ceil(quantite_or)
                 equip.ajouter_or(player, quantite_or)
                 Entree("...","", False).run()
                 if tour == 0 :

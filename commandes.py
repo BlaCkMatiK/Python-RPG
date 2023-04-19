@@ -107,7 +107,7 @@ class Commandes:
     def heal(self, player, equip):
         os.system("cls")
         tprint("HEAL")
-        print(f"Vous avez {player.health} / {player.max_health} HP")
+        print(f"Vous avez {player.health} / {player.max_health} HP\n")
         if player.potions != []:
             ct = 0
             for potion in player.potions:
@@ -123,12 +123,8 @@ class Commandes:
             except (ValueError, IndexError):
                 print("Choix invalide.")
         else:
-            Entree("Malheuserement, vous n'avez aucune potion !", "\n[italic]Appuez sur entrée pour continuer ... [italic]", True).run()
+            Entree("Malheuserement, vous n'avez aucune potion !\n[italic]Appuez sur entrée pour continuer ... [italic]", "", True).run()
     
     def quit(self, player, equip):
         print(f"{player.name} quitte le jeu !")
-        exit(0)    
-
-# player = create_character()
-# action = Commandes(player)
-# action.choix()
+        exit(0)

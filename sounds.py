@@ -95,6 +95,16 @@ def sound_level_up():
     sounds_level_up = pygame.mixer.Sound('sounds/level_up.wav')
     sounds_level_up.play()
 
+def sound_fuite():
+    sound_init()
+    sounds_fuite = pygame.mixer.Sound('sounds/fuite.wav')
+    sounds_fuite.play()
+
+def sound_heal():
+    sound_init()
+    sounds_heal = pygame.mixer.Sound('sounds/heal.wav')
+    sounds_heal.play()
+
 def quit_pygame():
     pygame.mixer.quit()
     pygame.quit()

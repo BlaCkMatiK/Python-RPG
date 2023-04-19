@@ -23,7 +23,7 @@ class Event:
         ]
         events_prob = [0.1, 0.2, 0.4, 0.1, 0.1, 0.1]
 
-        event = self._weighted_choice(events_list, events_prob)
+        event = self._choix_pondéré(events_list, events_prob)
 
         if event == "vide":
             self.salle_vide(player, equip)
@@ -53,7 +53,6 @@ class Event:
             for i in range(0, 3):
                 time.sleep(0.5)
                 print(".")
-            time.sleep(2)
             """ Fonction qui retourne un item aléatoire parmi une arme, une armure ou de l'or """
             item_1 = random_arme()
             item_2 = random_armure()
@@ -98,8 +97,10 @@ class Event:
             a = Entree("Voulez-vous tenter de fuir? (Oui / Non)", "> ").run()
             if a.lower().startswith("o"):
                         if randint(0, 1) == 1 :
-                            Entree("Vous avez réussi à fuire !", "> ").run()
                             quit_pygame()
+                            sound_fuite()
+                            time.sleep(2)
+                            Entree("Vous avez réussi à fuire !", "> ").run()
                             sound_bgm()
                             Event(player, equip).salle_vide(player, equip)
                             break
@@ -109,40 +110,7 @@ class Event:
             enemy = random_enemy()
             battle = Combat(player, equip, enemy)
             battle.battle(player, equip, enemy)
-            break
-            
-
-    # def salle_monstre(self, player, equip, niveau="base"):
-    #     os.system("cls")
-    #     tprint("COMBAT")
-    #     time.sleep(0.1)
-    #     quit_pygame()
-    #     sound_battle()
-    #     print("%s rencontre %s" % (player.name, 'un ennemi !'))
-    #     while True:
-    #         os.system("cls")
-    #         tprint("COMBAT")
-    #         if Entree("Voulez-vous tenter de fuir? (Oui / Non)", "> ").run().lower().startswith("o"):
-    #             if randint(0, 1) == 0:
-    #                 Entree("Vous arrivez à fuir !", "> ", True).run()
-    #                 quit_pygame()
-    #                 sound_bgm()
-    #                 player.status = "normal"
-    #                 Event(player, equip).salle_vide(player, equip)
-    #                 break
-    #             else:
-    #                 Entree("Vous n'arrivez pas à fuir !", "> ", True).run()
-    #         else:
-    #             pass
-    #     player.status = "combat"
-    #     if niveau =="base":
-    #         enemy = random_enemy()
-    #     else:
-    #         enemy = random_boss()
-    #     battle = Combat(player, equip, enemy)
-    #     battle.battle(player, equip, enemy)
-            
-                
+            break               
 
     def salle_magasin(self, player, equip):
         os.system("cls")
@@ -237,7 +205,7 @@ class Event:
                 print("Le marchant vous souhaite une bonne journée !")
             elif var_2 == 1:
                 print("Oh le rat")
-        os.system("cls")
+        Entree("\n[italic]Appuez sur entrée pour continuer ... [italic]", "", True).run()
 
     def salle_piege(self, player, equip):
         os.system("cls")
@@ -250,11 +218,10 @@ class Event:
         print("\nAie ! Vous venez de vous prendre un piège!")
         sound_trap()
         time.sleep(1)
-        print("Vous avez perdu 2 HP ❤️ ")
-        wait_input()
+        trap = randint(1,2)
+        Entree(f"Vous avez perdu {trap*2} HP ❤️ ", "> ", True)
         player.health -= 2
         player.traps +=1
-        os.system("cls")
     
     def salle_couloir(self, player, equip):
         os.system("cls")
@@ -270,73 +237,13 @@ class Event:
         elif a > 6 and a < 8 :
             Event(player, equip).salle_coffre(player, equip)
         else : 
-            Event(player, equip).salle_magasin
+            Event(player, equip).salle_magasin(player, equip)
 
-    def _weighted_choice(self, list, prob):
+    def _choix_pondéré(self, list, prob):
         """Choix pondéré d'un évenement
 
         Args:
             list (list): nom evenements
             prob (list): probabilités
         """
-        # Select a random choice based on a probability distribution
         return choices(list, prob)[0]
-
-# from caracter import *
-# import random
-# from rich import print
-# from screen import over, wait_input
-# import time
-# from sounds import *
-# from art import *
-# from combat import Combat
-# from inventaire import *
-
-# a_dice=Dice(6)
-
-
-
-# def explore(self):
-#     if self.status != "combat":
-#         self.steps += 1
-#         print("%s explore un passage étroit." % self.name)
-#         time.sleep(1)
-#         res = randint(1, 10)
-#         print(f"Dé : {res}")
-#         if res <= 1:
-#             marchand(self)
-#         elif res > 1 and res <= 5:
-#             rencontre(self)
-#         elif res > 5 and res < 8:
-#             ouvrir_coffre(self)
-#         elif res > 8:
-#             piege(self)
-#         elif res == 9:
-#             couloir(self)
-#         else:
-#             print("Ouf ! Il ne se passe rien dans cette salle")
-#             wait_input()
-#     else:
-#         print("Vous ne pouvez pas partir comme ça")
- 
-
-# def fuite(self):
-#     if self.status == "combat":
-#         res = randint(0, self.discrétion)
-#         print(f"dé :{res}")
-#         if res > 4:
-#             self.status = "normal"
-#             print("Vous avez réussi à fuire")
-#             quit_pygame()
-#             sound_bgm()
-#         else:
-#             print("Vous n'avez pas réussi a fuire")
-#             self.status = "combat"
-#             self.vitesse_T = self.vitesse
-#             self.vitesse = 0
-#             Commands["combat"](self)
-#     else:
-#         print("Mais vous n'êtes pas en combat")
-
-# def rencontre(self):
-#     

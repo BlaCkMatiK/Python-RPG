@@ -107,11 +107,11 @@ class Character:
 
     def encaisse(self, damages):
         roll = self.dice.roll()
-        armure_bonus = self.armes[0].bonus if len(self.armes) > 0 else 0 
+        armure_bonus = self.armures[0].bonus if len(self.armures) > 0 else 0 
         wounds = (self.compute_encaisse(roll, damages)) - armure_bonus
         if wounds < 0:
             wounds = 0
-        print(f"DEFENSE🛡️\n     (Dégats: {damages} - DEF: {self.defense_value} - Dé: {roll})\n     [blue]{self.get_name()} se défend[/blue] contre {damages} dégats et en prends {wounds}.\n")
+        print(f"DEFENSE🛡️\n     (Dégats: {damages} - DEF: {self.defense_value} - Armure {armure_bonus} - Dé: {roll})\n     [blue]{self.get_name()} se défend[/blue] contre {damages} dégats et en prends {wounds}.\n")
         self.decrease_health(wounds)
         self.show_health()
         #time.sleep(2)
@@ -157,30 +157,48 @@ class Character:
 class Warrior(Character):
     type = "Warrior"
     def __init__(self):
-        super().__init__(20, 8, 5, 2, a_dice)
+        super().__init__(20, 8, 6, 5, a_dice)
     
     def compute_damages(self, roll, target):
-        print("Bonus : Axe in your face ! (+3 damages)")
-        return super().compute_damages(roll, target) + 3
+        print("[#3498DB]Bonus : Coup critique du Warrior ! (+2 damages)[#3498DB]")
+        return super().compute_damages(roll, target) + 2
+    
+    def bonus_classe_print(slef):
+        return f"[#3498DB](Bonus : +2 ATK par tour !)[#3498DB]"
+    
+    def bonus_arme_print(self):
+        return f"Cette classe utilise des épées"
 
 class Mage(Character):
     type = "Mage"
 
     def __init__(self):
-        super().__init__(15, 10, 10, 2, a_dice)
-
-    def compute_defense(self, roll, damages):
-        print("Bonus : Magic armor ! (-3 wournds)")
-        return super().compute_defense(roll, damages) - 3
-
-class Thief(Character):
-    type = "Thief"
-    def __init__(self):
-        super().__init__(10, 10, 10, 10, a_dice)
+        super().__init__(17, 6, 9, 7, a_dice)
 
     def compute_damages(self, roll, target):
-        print(f"Bonus : Backstab ! (+{target.get_defense()} damages)")
-        return super().compute_damages(roll, target) + target.get_defense()
+        if self.health == self.max_health:
+            print("[#3498DB]Bonus : Pas de soin ! (vie max) ![#3498DB]")
+        else:
+            print("[#3498DB]Bonus : Soin du mage ! (+ 1 HP)[#3498DB]")
+            self.health +=1
+        return super().compute_damages(roll, target)
+    
+    def bonus_classe_print(self):
+        return f"[#3498DB](Bonus : +1 HP par tour !)[#3498DB]"
+    
+    def bonus_arme_print(self):
+        return f"Cette classe utilise des sceptres"
+
+class Thief(Character):
+    type = "Voleur"
+    def __init__(self):
+        super().__init__(18, 8, 6, 10, a_dice)
+
+    def bonus_classe_print(self):
+        return f"[yellow](Bonus : x2,5 or (arrondi au sup.) par combat !)[yellow]"
+    
+    def bonus_arme_print(self):
+        return f"Cette classe utilise des dagues"
 
 class Looser(Character):
     type = "Looser"
@@ -193,7 +211,7 @@ m = Mage()
 t = Thief()
 l = Looser()
 
-classes = [w, m, t, l]
+classes = [w, m, t]
    
 def create_character():
     os.system("cls")
@@ -210,6 +228,8 @@ def create_character():
             for classe in classes:
                 ct += 1
                 print(f"{ct}. {classe.stats_print()}")
+                print("    " + classe.bonus_classe_print())
+                print("    " + classe.bonus_arme_print()+ "\n")
 
             # Loop until a valid integer is entered
             while True:
@@ -218,7 +238,7 @@ def create_character():
                     classe_choix = int(classe_choix_str)
                     if 1 <= classe_choix <= len(classes):
                         break
-                print(f"[italic][red]Veuillez saisir une valeur entre 1 et 4 ![red][italic]\n")
+                print(f"[italic][red]Veuillez saisir une valeur entre 1 et 3 ![red][italic]\n")
 
             selected_class = classes[classe_choix-1]
             character = selected_class
@@ -228,48 +248,7 @@ def create_character():
         except ValueError:
             tprint("CREATION DE PERSONNAGE")
             os.system("cls")
-            print(f"[italic][red]Veuillez saisir une valeur entre 1 et 4 ![red][italic]\n")
-
-
-
-
-
-    # while True:
-    #     try:
-    #         tprint("CREATION DE PERSONNAGE")
-    #         print(f"[pink]{name}[pink], choisissez votre classe (HP ❤️ / ATK ⚔️ / DEF 🛡️ / VIT ⚡️) : \n")
-    #         ct = 0
-    #         for classe in classes:
-    #             ct+=1
-    #             print(f"{ct}. {classe.stats_print()}")
-    #         while True:
-    #             classe_choix = input("> ")
-    #             if classe_choix.isdigit():
-    #                 classe_choix = int(classe_choix)
-    #                 break
-    #             else:
-    #                 print("Veuillez entrer un nombre entier valide.")
-                
-    #             if classe_choix < 1 or classe_choix > len(classes):
-    #                 raise ValueError("Veuillez saisir un nombre valide correspondant à la classe de votre choix.")
-
-    #             selected_class = classes[classe_choix-1]
-    #             character = selected_class
-    #             character.name = name
-
-        # if classe_choix < 1 or classe_choix > len(classes):
-        #     raise ValueError("Veuillez saisir un nombre valide correspondant à la classe de votre choix.")
-
-        # selected_class = classes[classe_choix-1]
-        # character = selected_class
-        # character.name = name
-            # classe_choix = int(Entree("", "> ").run())
-             #classe = Entree("\n\n*************\n\n1. " + Warrior().stats_print() +"\n    (Utilisent des épées)"+ "\n\n2. " + Mage().stats_print() +"\n    (Utilisent des sceptres)" + "\n\n3. " + Thief().stats_print() +"\n    (Utilisent des dagues)"+ "\n\n4. " + Looser().stats_print(), "> ", True).run()
-            
-        except ValueError:
-            tprint("CREATION DE PERSONNAGE")
-            os.system("cls")
-            print("[italic][red]Veuillez saisir une valeur entre 1 et 4 ![red][italic]\n")
+            print(f"[italic][red]Veuillez saisir une valeur entre 1 et 3 ![red][italic]\n")
     
         os.system("cls")
         tprint("CREATION DE PERSONNAGE")
@@ -351,7 +330,16 @@ class Enemy(Character):
         print("ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️\n")
 
     def stats(self):
-        return(f"ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️\n")
+        return(f"HP : {self.max_health} ❤️ / ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️\n")
+
+    def encaisse(self, damages):
+        roll = self.dice.roll()
+        wounds = (self.compute_encaisse(roll, damages))
+        if wounds < 0:
+            wounds = 0
+        print(f"DEFENSE🛡️\n     (Dégats: {damages} - DEF: {self.defense_value} - Dé: {roll})\n     [blue]{self.get_name()} se défend[/blue] contre {damages} dégats et en prends {wounds}.\n")
+        self.decrease_health(wounds)
+        self.show_health()
 
     def choose_turn(self, target):
         choice = randint(1,3)
@@ -365,32 +353,59 @@ class Enemy(Character):
 
 class Gobelin(Enemy):
     def __init__(self):
-        super().__init__("Gobelin",15, 6, 6, 3, a_dice)
-
+        super().__init__("Gobelin",12, 6, 5, 6, a_dice)
 class Squelette(Enemy):
     def __init__(self):
-        super().__init__("Squelette",10, 8, 6, 4, a_dice)
-
+        super().__init__("Squelette",12, 7, 4, 8, a_dice)
 class Ogre(Enemy):
     def __init__(self):
-        super().__init__("Ogre",18, 10, 6, 5, a_dice)
+        super().__init__("Ogre",15, 12, 7, 4, a_dice)
+class Zombie(Enemy):
+    def __init__(self):
+        super().__init__("Zombie",10, 7, 5, 4, a_dice)
+class Golem(Enemy):
+    def __init__(self):
+        super().__init__("Golem",15, 10, 8, 4, a_dice)
+class Troll(Enemy):
+    def __init__(self):
+        super().__init__("Troll", 15, 12, 6, 6, a_dice)       
+class Fantome(Enemy):
+    def __init__(self):
+        super().__init__("Fantome", 12, 10, 4, 8, a_dice)
+class Geant(Enemy):
+    def __init__(self):
+        super().__init__("Géant", 15, 12, 7, 4, a_dice) 
+class Minotaure(Enemy):
+    def __init__(self):
+        super().__init__("Minautaure", 10, 12, 7, 8, a_dice)
 
+#boss
 class Dragon(Enemy):
     def __init__(self):
-        super().__init__("Dragon", 100, 10, 10, 10, a_dice)
-
+        super().__init__("Dragon",40, 20, 15, 8, a_dice)
+class Hydre(Enemy):
+    def __init__(self):
+        super().__init__("Hydre", 50, 15, 20, 11, a_dice)
 class Kraken(Enemy):
     def __init__(self):
-        super().__init__("Kraken", 100, 10, 10, 10, a_dice)
+        super().__init__("Kraken",60, 25, 10, 0, a_dice)
 
 gobelin = Gobelin()
 squelette = Squelette()
 ogre = Ogre()
+zombie = Zombie()
+golem = Golem()
+troll = Troll()
+fantome = Fantome()
+geant = Geant()
+minautaure = Minotaure()
+
 dragon = Dragon()
 kraken = Kraken()
+hydre = Hydre()
 
-enemies = [gobelin, squelette, ogre]
-boss = [dragon, kraken]
+enemies = [gobelin, squelette, ogre, zombie, golem, troll, fantome, geant, minautaure]
+boss = [dragon, kraken, hydre]
 
 def random_enemy():
     return choice(enemies)
