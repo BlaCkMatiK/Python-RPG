@@ -48,7 +48,10 @@ class Event:
         tprint("SALLE")
         print("Vous avez trouvé un coffre !")
         if Entree("Voulez-vous l'ouvrir ? (Oui/Non)", "> ").lower().startswith("o"):
-            print("\nLe coffre s'ouvre ...")
+            print("\nLe coffre s'ouvre")
+            for i in range(0, 3):
+                time.sleep(1)
+                print(".")
             sound_chest_o()
             time.sleep(2)
             """ Fonction qui retourne un item aléatoire parmi une arme, une armure ou de l'or """
@@ -77,7 +80,7 @@ class Event:
             Entree("[italic]Appuyez sur entrée pour continuer ...[italic]","", True).run()
         else:
             Entree("Vous n'avez pas ouvert ce coffre.", "> ", True).run()
-    
+     
     def salle_monstre(self, player, equip, niveau="base"):
         os.system("cls")
         tprint("COMBAT")
@@ -85,26 +88,59 @@ class Event:
         quit_pygame()
         sound_battle()
         print("%s rencontre %s" % (player.name, 'un ennemi !'))
-        # while True:
-        #     os.system("cls")
-        #     tprint("COMBAT")
-        #     if Entree("Voulez-vous tenter de fuir? (Oui / Non)", "> ").run().lower().startswith("o"):
-        #         if randint(0, 1) == 0:
-        #             Entree("Vous arrivez à fuir !", "> ", True).run()
-        #             quit_pygame()
-        #             sound_bgm()
-        #             break
-        #         else:
-        #             Entree("Vous n'arrivez pas à fuir !", "> ", True).run()
-        #     else:
-        #         pass
         player.status = "combat"
-        if niveau =="base":
+        while True:
+            if niveau == "boss":
+                    enemy = random_boss()
+                    battle = Combat(player, equip, enemy)
+                    battle.battle(player, equip, enemy)
+                    break
+            a = Entree("Voulez-vous tenter de fuir? (Oui / Non)", "> ").run()
+            if a.lower().startswith("o"):
+                        if randint(0, 1) == 1 :
+                            Entree("Vous avez réussi à fuire !", "> ").run()
+                            quit_pygame()
+                            sound_bgm()
+                            Event(player, equip).salle_vide(player, equip)
+                            break
+                        else:
+                            Entree("Vous n'avez pas réussi à fuire !","> ").run()
+            player.status = "combat"
             enemy = random_enemy()
-        else:
-            enemy = random_boss()
-        battle = Combat(player, equip, enemy)
-        battle.battle(player, equip, enemy)
+            battle = Combat(player, equip, enemy)
+            battle.battle(player, equip, enemy)
+            break
+            
+
+    # def salle_monstre(self, player, equip, niveau="base"):
+    #     os.system("cls")
+    #     tprint("COMBAT")
+    #     time.sleep(0.1)
+    #     quit_pygame()
+    #     sound_battle()
+    #     print("%s rencontre %s" % (player.name, 'un ennemi !'))
+    #     while True:
+    #         os.system("cls")
+    #         tprint("COMBAT")
+    #         if Entree("Voulez-vous tenter de fuir? (Oui / Non)", "> ").run().lower().startswith("o"):
+    #             if randint(0, 1) == 0:
+    #                 Entree("Vous arrivez à fuir !", "> ", True).run()
+    #                 quit_pygame()
+    #                 sound_bgm()
+    #                 player.status = "normal"
+    #                 Event(player, equip).salle_vide(player, equip)
+    #                 break
+    #             else:
+    #                 Entree("Vous n'arrivez pas à fuir !", "> ", True).run()
+    #         else:
+    #             pass
+    #     player.status = "combat"
+    #     if niveau =="base":
+    #         enemy = random_enemy()
+    #     else:
+    #         enemy = random_boss()
+    #     battle = Combat(player, equip, enemy)
+    #     battle.battle(player, equip, enemy)
             
                 
 

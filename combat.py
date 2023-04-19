@@ -5,7 +5,6 @@ from art import *
 from random import choice
 from screen import *
 from inventaire import *
-from test import Entree
 
 class Combat:
     def __init__(self, player, equip, enemy):
