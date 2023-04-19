@@ -5,6 +5,7 @@ from rich import *
 from random import *
 from sounds import *
 from art import *
+from inventaire import *
 
 from dice import Dice, RiggedDice
 
@@ -24,7 +25,7 @@ class Character:
         self.discrétion = 5
         self.vitesse = vitesse
         self.defending = False
-        self.vitesse_T = 0
+        self.vitesse_T = vitesse
         self.gold = 0
         self.armures = []
         self.armes = []
@@ -37,6 +38,10 @@ class Character:
         self.traps = 0
         self.level = 1
         self.p_experience = 0
+        self.carac_health = 0
+        self.carac_attack = 0
+        self.carac_defense = 0
+        self.carac_vitesse = 0
 
     def __str__(self):
         return f"{self.name} le {type(self).type} descend dans le donjon avec : HP : {self.max_health} ❤️ / ATK : {self.attack_value} ⚔️ / DEF : {self.defense_value}🛡️ / VIT : {self.vitesse}⚡️)\n"
@@ -122,10 +127,25 @@ class Character:
             else :
                 print("Action invalide.")
 
+    def stats_print(self):
+        return (f"{self.type} ({self.max_health} ❤️ / {self.attack_value} ⚔️ / {self.defense_value} 🛡️ / {self.vitesse} ⚡️)")
+    
+    def stats_print_carac(self):
+        return (f"HP : {self.max_health} ❤️ (+{self.carac_health}) / ATK : {self.attack_value} ⚔️ (+{self.carac_attack}) / DEF : {self.defense_value} 🛡️ (+{self.carac_defense}) / VIT : {self.vitesse} ⚡️ (+{self.carac_vitesse})\n")
+    
+    def stats(self):
+        os.system("cls")
+        tprint(f"STATS DE {self.name.upper()}")
+        print(self.stats_print_carac())
+        self.show_health()
+        self.show_xp()
+        input()
+
+   
 def create_character():
     os.system("cls")
     tprint("CREATION DE PERSONNAGE")
-    name = input("Le nom de votre personnage ? \n \n-> : ")
+    name = input("Le nom de votre personnage ? \n \n> ")
     valid_inputs = ["1", "2", "3", "4"]
     os.system("cls")
     
@@ -133,7 +153,7 @@ def create_character():
         try:
             tprint("CREATION DE PERSONNAGE")
             print(f"[pink]{name}[pink], choisissez votre classe (HP ❤️ / ATK ⚔️ / DEF 🛡️ / VIT ⚡️): ")
-            classe = input(f"\n\n*************\n\n1. Warrior (20 ❤️ / 8 ⚔️ / 5 🛡️ / 2 ⚡️) \n\n2. Mage (15 ❤️ / 10 ⚔️ / 10 🛡️ / 2 ⚡️) \n\n3. Thief (10 ❤️ / 10 ⚔️ / 10 🛡️ / 10 ⚡️) \n\n4. Looser (1 ❤️ / 1 ⚔️ / 1 🛡️ / 1 ⚡️	) \n \n-> : ")
+            classe = input("\n\n*************\n\n1. " + Warrior().stats_print() + "\n2. " + Mage().stats_print() + "\n3. " + Thief().stats_print() + "\n4. " + Looser().stats_print() + "\n\n> ")
             if str(classe) not in valid_inputs:
                 raise ValueError
             break
@@ -143,13 +163,13 @@ def create_character():
             print("[italic][red]Veuillez saisir une valeur entre 1 et 4 ![red][italic]\n")
 
     if classe == "1":
-        character = Warrior(20, 8, 5, 2, a_dice)
+        character = Warrior()
     elif classe == "2":
-        character = Mage(15, 10, 10, 2, a_dice)
+        character = Mage()
     elif classe == "3":
-        character = Thief(10,10,10,10, a_dice)
+        character = Thief()
     elif classe == "4":
-        character = Looser(1,1,1,1, a_dice)
+        character = Looser()
     character.name = name
     
     os.system("cls")
@@ -159,7 +179,7 @@ def create_character():
     p_caracteristiques=10
 
     while p_caracteristiques > 0:
-        print(f"Statistiques actuelles :\n(HP : {character.health} ❤️ / ATK : {character.attack_value} ⚔️ / DEF : {character.defense_value}🛡️ / VIT : {character.vitesse}⚡️)\n")
+        print("Statistiques actuelles : \n" + character.stats_print_carac())
         print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer :[italic]")
 
         # Request input for HP points
@@ -176,6 +196,7 @@ def create_character():
                 print("Entrez un nombre entier valide")
 
         character.max_health += n_hp
+        character.carac_health += n_hp
         character.regenerate()
         p_caracteristiques -= n_hp
 
@@ -194,6 +215,7 @@ def create_character():
                     print("Entrez un nombre entier valide")
 
             character.attack_value += n_atk
+            character.carac_attack += n_atk
             p_caracteristiques -= n_atk
 
         if p_caracteristiques > 0:
@@ -211,6 +233,7 @@ def create_character():
                     print("Entrez un nombre entier valide")
 
             character.defense_value += n_def
+            character.carac_defense += n_def
             p_caracteristiques -= n_def
         os.system("cls")
         tprint("DESCENTE")
@@ -221,7 +244,9 @@ def create_character():
 
 class Warrior(Character):
     type = "Warrior"
-
+    def __init__(self):
+        super().__init__(20, 80, 5, 2, a_dice)
+    
     def compute_damages(self, roll, target):
         print("Bonus : Axe in your face ! (+3 damages)")
         return super().compute_damages(roll, target) + 3
@@ -229,19 +254,27 @@ class Warrior(Character):
 class Mage(Character):
     type = "Mage"
 
+    def __init__(self):
+        super().__init__(15, 10, 10, 2, a_dice)
+
     def compute_defense(self, roll, damages):
         print("Bonus : Magic armor ! (-3 wournds)")
         return super().compute_defense(roll, damages) - 3
 
 class Thief(Character):
     type = "Thief"
+    def __init__(self):
+        super().__init__(10, 10, 10, 10, a_dice)
 
     def compute_damages(self, roll, target):
         print(f"Bonus : Backstab ! (+{target.get_defense()} damages)")
         return super().compute_damages(roll, target) + target.get_defense()
 
 class Looser(Character):
-    type = "looser"
+    type = "Looser"
+
+    def __init__(self):
+        super().__init__(1, 1, 1, 1, a_dice)
 
 class Enemy(Character):
     type = "enemy"
@@ -262,62 +295,54 @@ class Enemy(Character):
         elif choice == "3" :
             pass
 
-class CrawlingVermin(Enemy):
+class Gobelin(Enemy):
     def __init__(self):
         super().__init__("Gobelin",15, 6, 6, 3, a_dice)
 
-class ShadowStalker(Enemy):
+class Squelette(Enemy):
     def __init__(self):
         super().__init__("Squelette",10, 8, 6, 4, a_dice)
 
-class VenomousSerpent(Enemy):
+class Ogre(Enemy):
     def __init__(self):
         super().__init__("Ogre",18, 10, 6, 5, a_dice)
 
-class DeathbringerScorpion(Enemy):
+class PLACEHOLDER(Enemy):
     def __init__(self):
-        super().__init__("PLACEHOLDER",25, 5, 4, 6, a_dice)
+        super().__init__("PLACEHOLDER", 10, 10, 10, 10, a_dice)
 
-class AbyssalHorror(Enemy):
+class PLACEHOLDER2(Enemy):
     def __init__(self):
-        super().__init__("PLACEHOLDER2",30, 6, 5, 7, a_dice)
+        super().__init__("PLACEHOLDER2", 10, 10, 10, 10, a_dice)
 
-if __name__ == "__main__":
-    a_dice = Dice(6)
+gobelin = Gobelin()
+squelette = Squelette()
+ogre = Ogre()
+placeholder = PLACEHOLDER()
+placeholder2 = PLACEHOLDER2()
 
-    name = input("Le nom de votre personnage ? :  ")
-    classe = input("Choisis ta classe : \n 1. Warrior \n 2. Mage \n: ")
+enemies = [gobelin, squelette, ogre, placeholder, placeholder2]
 
-    # while classe == 0 or (classe != 1 and classe != 2) :
-    #     classe = input("Choisis ta classe : \n 1. Warrior \n 2. Mage : ")
-    if classe == "1":
-        character = Warrior(20, 8, 5, 2, a_dice)
-    elif classe == "2":
-        character = Mage(15, 10, 10, 2, a_dice)
+def random_enemy():
+    return choice(enemies)
 
-    character.name = name
-    points_de_competences = 50
 
-    print("Vous avez", points_de_competences,
-          "points de compétences à attribuer.")
+# class CrawlingVermin(Enemy):
+#     def __init__(self):
+#         super().__init__("Gobelin",15, 6, 6, 3, a_dice)
 
-    while points_de_competences > 0:
-        print("Statistiques actuelles :")
-        print("Points de vie :", character.max_health)
-        print("Attaque :", character.attack_value)
-        print("Défense :", character.defense_value)
-        n_hp = int(input("Combien de points d'HP ? : "))
-        character.max_health += n_hp
-        character.regenerate()
-        points_de_competences -= n_hp
-        if points_de_competences > 0:
-            n_atk = int(input("Combien de points d'ATK ? : "))
-            character.attack_value += n_atk
-            points_de_competences -= n_atk
-            if points_de_competences > 0:
-                n_def = int(input("Combien de points de DEF ? : "))
-                character.defense_value += n_def
-                points_de_competences -= n_def
-    print(character)
-    print("%s enters a dark cave, searching for adventure." % character.name)
+# class ShadowStalker(Enemy):
+#     def __init__(self):
+#         super().__init__("Squelette",10, 8, 6, 4, a_dice)
 
+# class VenomousSerpent(Enemy):
+#     def __init__(self):
+#         super().__init__("Ogre",18, 10, 6, 5, a_dice)
+
+# class DeathbringerScorpion(Enemy):
+#     def __init__(self):
+#         super().__init__("PLACEHOLDER",25, 5, 4, 6, a_dice)
+
+# class AbyssalHorror(Enemy):
+#     def __init__(self):
+#         super().__init__("PLACEHOLDER2",30, 6, 5, 7, a_dice)
