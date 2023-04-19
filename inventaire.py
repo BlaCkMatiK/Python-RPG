@@ -20,7 +20,7 @@ class Inventaire(object):
             max_hp_points = min(p_caracteristiques, 10)
             while True:
                 try:
-                    n_hp = int(input(f"\nCombien de points d'HP ? (maximum {max_hp_points}): "))
+                    n_hp = int(Entree(f"\nCombien de points d'HP ? (maximum {max_hp_points}): ", "> ").run())
                     if 0 <= n_hp <= max_hp_points:
                         break
                     else:
@@ -31,13 +31,14 @@ class Inventaire(object):
 
             player.max_health += n_hp
             player.health += n_hp
+            player.carac_health += n_hp
             p_caracteristiques -= n_hp
 
             if p_caracteristiques > 0:
                 max_atk_points = min(p_caracteristiques, 10)
                 while True:
                     try:
-                        n_atk = int(input(f"Combien de points d'ATK ? (maximum {max_atk_points}): "))
+                        n_atk = int(Entree(f"Combien de points d'ATK ? (maximum {max_atk_points}): ", "> ").run())
                         if 0 <= n_atk <= max_atk_points:
                             break
                         else:
@@ -47,13 +48,14 @@ class Inventaire(object):
                         print("Entrez un nombre entier valide")
 
                 player.attack_value += n_atk
+                player.carac_attack += n_hp
                 p_caracteristiques -= n_atk
 
             if p_caracteristiques > 0:
                 max_def_points = min(p_caracteristiques, 10)
                 while True:
                     try:
-                        n_def = int(input(f"Combien de points de DEF ? (maximum {max_def_points}): "))
+                        n_def = int(Entree(f"Combien de points de DEF ? (maximum {max_def_points}): ", "> ").run())
                         if 0 <= n_def <= max_def_points:
                             break
                         else:
@@ -63,6 +65,7 @@ class Inventaire(object):
                         print("Entrez un nombre entier valide")
 
                 player.defense_value += n_def
+                player.carac_defense += n_hp
                 p_caracteristiques -= n_def
 
     def ajouter_xp(self, player, xp):
@@ -73,7 +76,7 @@ class Inventaire(object):
             player.level += 1
             level_t +=1
             player.p_experience -= 10
-            wait_input()
+            Entree("", ">", False).run()
             sound_level_up()
             tprint("LEVEL UP !")
             print(f"[blue]{player.name} a atteint le niveau {player.level} ![blue]")
@@ -81,51 +84,75 @@ class Inventaire(object):
         self.ajouter_caracteristique(player, level_t)
 
     def ajouter_potion(self, player, potion):
+        sound_item()
         player.potions.append(potion)
-        print(f"Vous obtenez une {potion.name}")
 
     def ajouter_arme(self, player, arme):
+        if player.type == arme.classe:
+            arme.bonus *=2
         if player.armes == []:
             player.armes.append(arme)
-            print(f"Vous obtenez une {arme.name}")
         else :
-            print("Vous avez déja une arme !")
+            print(f"Vous posez votre {player.armes[0].name} !")
+            player.armes = []
+            player.armes.append(arme)
+        sound_item()
 
     def ajouter_armure(self, player, armure):
         if player.armures == []:
             player.armures.append(armure)
-            print(f"Vous obtenez une {armure.name}")
         else :
-            print("Vous avez déja une arme !")
+            print(f"Vous posez votre {player.armures[0].name} !")
+            player.armures = []
+            player.armures.append(armure)
+        sound_item()
 
     def afficher_inventaire(self, player):
         tprint(f"INVENTAIRE DE  {player.name}:")
-        print(f"- Or: {player.gold}")
-        print("- Armes: ")
+        print(f"[yellow]Pièces d'or: {player.gold}[yellow]\n")
+        print("[#82E0AA]Armes ⚔️ : [#82E0AA]")
         if player.armes == []:
-            print("    Aucune arme")
+            print("    [italic][red]Vous ne possédez aucune arme[red][italic]\n")
         else:    
             for arme in player.armes:
-                print(f"  - {str(arme)}")
-        print("- Armures: ")
+                if player.type == arme.classe:
+                    print(f"    - {str(arme)} / [blue]Arme de classe : BONUS x2 !\n")
+                    
+                else:
+                    print(f"    - {str(arme)}\n")
+        print("[#82E0AA]Armures 🛡️ : [#82E0AA]")
         if player.armures == []:
-            print("    Aucune armure")
+            print("    [italic][red]Vous ne possédez aucune armure[red][italic]\n")
         else:    
             for armure in player.armures:
-                print(f"  - {str(armure)}")
-        print("- Potions: ")
+                print(f"  - {str(armure)}\n")
+        print("[#82E0AA]Potions ❤️ : [#82E0AA]")
         if player.potions == []:
-            print("     Aucune potion")
+            print("     [italic][red]Vous ne possédez aucune potion[red][italic]\n")
         else:    
             for potion in player.potions:
                 print(f"  - {str(potion)}")
-        #wait_input()
+        Entree(f"[italic]Appuez sur Entrée pour continuer ... [italic]", "", True).run()
 
     def ajouter_hp(self, player, potion):
-        if (player.max_health - potion.bonus) > player.health :
-            player.health += potion.bonus
-        else :
-            pass
+        if player.health + potion.bonus > player.max_health:
+            potion.bonus = player.max_health - player.health
+        player.health += potion.bonus
+        sound_chest_c()
+
+    def achat(self, player, objet):
+        if player.gold > objet.price:
+            player.gold -= objet.price
+            if objet.type=="arme":
+                self.ajouter_arme(player, objet)
+            elif objet.type=="armure":
+                self.ajouter_armure(player, objet)
+            else:
+                self.ajouter_potion(player, objet)
+            print(f"Vous achetez {objet.name} pour [yellow]{objet.price} or[yellow] !\nIl vous reste [yellow]{player.gold} or[yellow] !")
+            sound_item()
+        else:
+            Entree("Hé ! Vous n'avez pas assez d'argent pour acheter cet objet !", "> ").run()
 
 # def ajouter_caracteristique(self, p_caracteristiques):
 #     while p_caracteristiques > 0:
@@ -208,7 +235,7 @@ class Inventaire(object):
 #         self.level += 1
 #         level_t +=1
 #         self.p_experience -= 10
-#         wait_input()
+#         wait_Entree("", ">", False)
 #         sound_level_up()
 #         tprint("LEVEL UP !")
 #         print(f"[blue]{self.name} a atteint le niveau {self.level} ![blue]")
@@ -226,4 +253,4 @@ class Inventaire(object):
 #     print("- Armures: ")
 #     for armure in self.armures:
 #         print(f"  - {armure}")
-#     wait_input()
+#     wait_Entree("", ">", False)
