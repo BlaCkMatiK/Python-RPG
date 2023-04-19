@@ -5,6 +5,7 @@ from art import *
 from random import choice
 from screen import *
 from inventaire import *
+from test import Entree
 
 class Combat:
     def __init__(self, player, equip, enemy):
@@ -23,12 +24,13 @@ class Combat:
             tprint("COMBAT")            
             print(f"C'est un {enemy.name} ! \n")
             tour = -1
+            print(enemy.stats())
+            Entree("", "> ").run()
             print(f"Vitesse de {player.name} = {player.vitesse}; vitesse de {enemy.name} = {enemy.vitesse}")
             if player.vitesse >= enemy.vitesse:
                 print("Vous attaquerez en premier !")
             else:
                 print("L'ennemi attaquera en premier !")
-            enemy.stats()
             os.system("cls")
             while player.is_alive() and enemy.is_alive():
                 tprint(f"COMBAT vs {enemy.name} ")
@@ -53,26 +55,25 @@ class Combat:
                 time.sleep(0.1)
                 sound_win_fight()
                 tprint("COMBAT - VICTOIRE!")
-                print(f"[green]Vous avez gagné ce combat ![green]")
+                print(f"[green]Vous avez gagné ce combat ![green]")                
+                Entree("...","", False).run()
                 quantite_or = randint(0, 5)
-                wait_input_pass()
                 equip.ajouter_or(player, quantite_or)
-                xp = randint(3,10)
-                wait_input_pass()
-                equip.ajouter_xp(player, xp)
-                player.vitesse = player.vitesse_T
-                player.kills +=1
-                wait_input_pass()
+                Entree("...","", False).run()
                 if tour == 0 :
                     player.OHKO +=1
                     time.sleep(0.1)
                     sound_OHKO()
                     print(f"[red]C'est un one-shot ![red]")
-                    wait_input()
+                    Entree("...","").run()
                 else :
                     print(f"Combat terminé en {tour+2} tours !")
-                    wait_input()
-
+                    Entree("...","", False).run()               
+                xp = randint(3,10)
+                equip.ajouter_xp(player, xp)
+                player.vitesse = player.vitesse_T
+                player.kills +=1
+                Entree("...", "", True).run()
                 if tour > player.tours_max:
                     player.tours_max = tour
                 quit_pygame()    

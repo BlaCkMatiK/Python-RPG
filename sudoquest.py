@@ -26,7 +26,7 @@ signal.signal(signal.SIGINT, handle_signal)
 def start():
     startup()    
     sound_create()
-    if input("Passer histoire ? (Oui / Non) - ").lower().startswith("o"):
+    if Entree("Passer histoire ? (Oui / Non)", "> ").run().lower().startswith("o"):
         pass
     else :
         story()

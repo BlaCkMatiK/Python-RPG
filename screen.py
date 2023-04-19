@@ -6,6 +6,34 @@ import signal
 from sounds import *
 from rich.prompt import Prompt
 from caracter import *
+import os
+from sounds import sound_ok
+
+class Entree(object):
+    def __init__(self, chaine, retour, clear=False):
+        self.chaine = chaine
+        self.retour = retour
+        self.clear = clear
+
+    def run(self):
+        print(self.chaine)
+        a = input(self.retour)
+        if self.clear :
+            os.system("cls")
+        sound_ok()
+        return a
+    
+    def strip(self):
+        user_input = self.run()
+        return user_input.strip()
+
+    def lower(self):
+        user_input = self.run()
+        return user_input.lower()
+
+    def startswith(self, prefix):
+        user_input = self.run()
+        return user_input.startswith(prefix)
 
 def wait_input():
     print("\n[italic]Appuyez sur Entrée pour continuer ...[italic]")
@@ -69,36 +97,37 @@ def title():
     #loading()
     startup()
 
-def over():
-    quit_pygame()
-    time.sleep(3)
-    signal.signal(signal.SIGINT, over)
-    sound_game_over()
-    tprint("GAME OVER !!")
-    #sys.stdout.flush()
-    time.sleep(5)
-    fin = input("Rejouer ? (Oui/Non)")
-    if fin.lower().startswith("o"):
-        pass
-    else :
-        exit(0)
+# def over():
+#     quit_pygame()
+#     time.sleep(3)
+#     signal.signal(signal.SIGINT, over)
+#     sound_game_over()
+#     tprint("GAME OVER !!")
+#     #sys.stdout.flush()
+#     time.sleep(5)
+#     fin = input("Rejouer ? (Oui/Non)")
+#     if fin.lower().startswith("o"):
+#         pass
+#     else :
+#         exit(0)
 
 def end_stats(self):
     os.system("cls")
     tprint("GAME OVER")
     print(f"STATISTIQUES DE LA PARTIE DE {self.name} :\n")
     print(self.stats_print_carac())
-    print(f"\n\nVous avez vaincu {self.kills} ennemis !\nVotre plus long combat à duré {self.tours_max} tours !\nVOus avez one-tap {self.OHKO} ennemis !\nVous avez ouvert {self.chests} coffres !\nVous avez accumulé {self.gold} or !\nVous avez \"exploré\" {self.steps} fois !\nVous êtes tombé dans {self.traps} pièges !\n")
-    fin = input("\nRejouer ? (Oui/Non)\n> ")
-    if fin.lower().startswith("o"):
+    print(f"\n\nVous avez vaincu {self.kills} ennemis !\nVotre plus long combat à duré {self.tours_max} tours !\nVous avez one-tap {self.OHKO} ennemis !\nVottre plus grosse attaque était de {self.max_dmg} !\nVous avez ouvert {self.chests} coffres !\nVous avez accumulé {self.gold} or !\nVous avez \"exploré\" {self.steps} fois !\nVous êtes tombé dans {self.traps} pièges !\n")
+    if Entree("\nRejouer ? (Oui/Non)", "> ", True).run().lower().startswith("o"):
         pass
     else :
+        time.sleep(1)
         exit(0)
 
 def print_game_over():
+    os.system("cls")
     quit_pygame()
     sound_game_over()
-    text = "GAMEOVER!"
+    text = "GAME OVER!"
 
     for char in text:
         # ascii_art = pyfiglet.figlet_format(char)
@@ -108,8 +137,8 @@ def print_game_over():
     time.sleep(2)
 
 if __name__ == "__main__":
-    story()
-    #print_game_over()
+    w = Entree("TEST", "> ", False)
+    print(w.strip())
 
 
                                                                
