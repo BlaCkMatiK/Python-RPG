@@ -2,48 +2,53 @@ from evenement import *
 from caracter import Character
 from sounds import *
 from art import *
-from inventaire import *
 from random import choice
 from screen import *
+from inventaire import *
 
 class Combat:
-    def __init__(self, fighter1, fighter2):
-        self.fighter1 = fighter1
-        self.fighter2 = fighter2
+    def __init__(self, player, equip, enemy):
+        self.player = player
+        self.enemy = enemy
+        self.equip = equip
 
-    def random_enemy(self):
-        enemies = [CrawlingVermin(), ShadowStalker(), VenomousSerpent(), DeathbringerScorpion(), AbyssalHorror()]
-        return choice(enemies)
+    # def random_enemy(self):
+    #     enemies = [CrawlingVermin(), ShadowStalker(), VenomousSerpent(), DeathbringerScorpion(), AbyssalHorror()]
+    #     return choice(enemies)
 
-    def battle(self):
-        if self.status == "combat":
-            goblin = Combat.random_enemy()
+    def battle(self, player, equip, enemy):
+        if player.status == "combat":
+            #goblin = Combat.random_enemy()
             os.system("cls")
-            tprint("COMBAT")
-            print(f"C'est un {goblin.name} ! \n")
+            tprint("COMBAT")            
+            print(f"C'est un {enemy.name} ! \n")
             tour = -1
-            print(f"Vitesse de {self.name} = {self.vitesse}; vitesse de {goblin.name} = {goblin.vitesse}")
-            time.sleep(2)
+            print(f"Vitesse de {player.name} = {player.vitesse}; vitesse de {enemy.name} = {enemy.vitesse}")
+            if player.vitesse >= enemy.vitesse:
+                print("Vous attaquerez en premier !")
+            else:
+                print("L'ennemi attaquera en premier !")
+            enemy.stats()
             os.system("cls")
-            while self.is_alive() and goblin.is_alive():
-                tprint(f"COMBAT vs {goblin.name} ")
+            while player.is_alive() and enemy.is_alive():
+                tprint(f"COMBAT vs {enemy.name} ")
                 tprint(f"TOUR {tour+2} ")
-                if self.vitesse >= goblin.vitesse:
-                    self.attack(goblin)
+                if player.vitesse >= enemy.vitesse:
+                    player.attack(enemy)
                     time.sleep(2)
                     print("********\n")
-                    goblin.attack(self)
+                    enemy.attack(player)
                     wait_input_turn()
                 else:
-                    goblin.attack(self)
+                    enemy.attack(player)
                     time.sleep(2)
                     print("********\n")
-                    self.attack(goblin)
+                    player.attack(enemy)
                     wait_input_turn()
-                self.status = "normal"
+                player.status = "normal"
                 os.system("cls")
                 tour += 1      
-            if self.is_alive():
+            if player.is_alive():
                 quit_pygame()
                 time.sleep(0.1)
                 sound_win_fight()
@@ -51,26 +56,27 @@ class Combat:
                 print(f"[green]Vous avez gagné ce combat ![green]")
                 quantite_or = randint(0, 5)
                 wait_input_pass()
-                ajouter_or(self, quantite_or)
+                equip.ajouter_or(player, quantite_or)
                 xp = randint(3,10)
                 wait_input_pass()
-                ajouter_xp(self, xp)
-                self.vitesse = self.vitesse_T
-                self.kills +=1
+                equip.ajouter_xp(player, xp)
+                player.vitesse = player.vitesse_T
+                player.kills +=1
                 wait_input_pass()
                 if tour == 0 :
-                    self.OHKO +=1
+                    player.OHKO +=1
                     time.sleep(0.1)
                     sound_OHKO()
                     print(f"[red]C'est un one-shot ![red]")
                     wait_input()
                 else :
-                    print(f"Combat terminé en {tour+1} tours !")
+                    print(f"Combat terminé en {tour+2} tours !")
                     wait_input()
 
-                if tour > self.tours_max:
-                    self.tours_max = tour
+                if tour > player.tours_max:
+                    player.tours_max = tour
                 quit_pygame()    
                 sound_bgm()
+            enemy.regenerate()
         else:
             print("Mais t'es con t'es pas en combat")
