@@ -108,11 +108,9 @@ Le joueur peut trouver **équipement** et **potions** afin de l'aider dans son a
 
 - Combat avec choix d'action  ⏳
   - *Attaque, défense ou soin*  
-
 - Bonus de classes : ⏳
   - *Par arme (arcs pour Achers, ...)*  ⏳
   - *Par classe (saignement pour Warior, ...)*  ⏳
-
 - Magasin d'achat d'items  ⏳
 
 ### Would
@@ -121,9 +119,7 @@ Le joueur peut trouver **équipement** et **potions** afin de l'aider dans son a
 - Sons d'ambiance ✔️
 - Meilleur affichage ⏳
   - *librairires comme **pygame** ou **curses***  
-
 - Sauvegarde + Tableau des scores ⏳
   - *.json*
-
 - Joueurs AI  ⏳
 - Sorts et compétences par gain d'XP  ⏳
