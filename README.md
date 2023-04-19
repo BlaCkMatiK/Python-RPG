@@ -82,8 +82,9 @@ Le joueur peut équipement et potions qui l'aideront dans son aventure.
 - *explore* (permet d'avancer dans le donjon)
   - *combat* (engager un combat contre un monstre rencontré)
   - *fuite* (tenter de fuit le combat)
-- *stats* (permet de connaitre ses statistiques actuelles)
 - *inventaire* (permet d'afficher son inventaire)  
+- *heal* (permet d'utiliser des potions)
+- *stats* (permet de connaitre ses statistiques actuelles)
 
 ## Mises à jour éventuelles
 
@@ -105,13 +106,22 @@ Expérience / Niveaux  ✔️
 
 ### Could
 
-Affixes (Bonus par armes sur classes, ...)  ⏳  
+Combat avec choix d'action  ⏳
+
+- *Attaque, défense ou soin*  
+
+Bonus de classes : ⏳
+
+- *Par arme (arcs pour Achers, ...)*  ⏳  
+- *Par classe (saignement pour Warior, ...)*  ⏳
+
 Magasin d'achat d'items  ⏳
 
 ### Would
 
-Des sons d'ambiance ✔️  
-Un meilleur affichage ⏳
+Musiques  ✔️  
+Sons d'ambiance ✔️  
+Meilleur affichage ⏳
 
 - *librairires comme **pygame** ou **curses***  
 
