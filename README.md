@@ -66,7 +66,7 @@ Il peut inscrire des commandes dans la console qui lui permettront de s'aventure
 
 ### Systèmes
 
-Actuellement, le joueur peut explorer le donjon. Aléatoirement, il peut rencontrer :
+Le joueur peut explorer le donjon. Aléatoirement, il peut rencontrer :
 
 - Des coffres
 - Des monstres
@@ -74,7 +74,7 @@ Actuellement, le joueur peut explorer le donjon. Aléatoirement, il peut rencont
 - Des couloirs secrets
 - Des marchands
 
-Le joueur peut équipement et potions qui l'aideront dans son aventure.
+Le joueur peut trouver **équipement** et **potions** afin de l'aider dans son aventure.
 
 ### Commandes
 
@@ -88,46 +88,42 @@ Le joueur peut équipement et potions qui l'aideront dans son aventure.
 
 ## Mises à jour éventuelles
 
-*Ci dessous, une feuille de route de nos mises à jour.*
+*Ci dessous, une feuille de route de nos futures mises à jour.*
 
 ### Must
 
-Un écran titre  ✔️  
-Un écran de Game Over  ⏳  
-Différents monstres  ✔️  
-Choix de couloirs  ⏳
+- Un écran titre  ✔️
+- Un écran de Game Over  ⏳
+- Différents monstres  ✔️
+- Couloirs secrets  ⏳  
+  - Boss  
 
 ### Should
 
-Equipement  ⏳  
-Expérience / Niveaux  ✔️
-
-- *Ennemis + puissants*
+- Equipement  ⏳
+- Expérience / Niveaux  ✔️
+  - *Ennemis + puissants*
 
 ### Could
 
-Combat avec choix d'action  ⏳
+- Combat avec choix d'action  ⏳
+  - *Attaque, défense ou soin*  
 
-- *Attaque, défense ou soin*  
+- Bonus de classes : ⏳
+  - *Par arme (arcs pour Achers, ...)*  ⏳
+  - *Par classe (saignement pour Warior, ...)*  ⏳
 
-Bonus de classes : ⏳
-
-- *Par arme (arcs pour Achers, ...)*  ⏳  
-- *Par classe (saignement pour Warior, ...)*  ⏳
-
-Magasin d'achat d'items  ⏳
+- Magasin d'achat d'items  ⏳
 
 ### Would
 
-Musiques  ✔️  
-Sons d'ambiance ✔️  
-Meilleur affichage ⏳
+- Musiques  ✔️
+- Sons d'ambiance ✔️
+- Meilleur affichage ⏳
+  - *librairires comme **pygame** ou **curses***  
 
-- *librairires comme **pygame** ou **curses***  
+- Sauvegarde + Tableau des scores ⏳
+  - *.json*
 
-Sauvegarde + Tableau des scores ⏳  
-
-- *.json*
-
-Joueurs AI  ⏳  
-Sorts et compétences par gain d'XP  ⏳
+- Joueurs AI  ⏳
+- Sorts et compétences par gain d'XP  ⏳
