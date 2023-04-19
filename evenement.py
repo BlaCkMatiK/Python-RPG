@@ -5,6 +5,7 @@ from screen import *
 from inventaire import *
 from combat import Combat
 from items import *
+from inventaire import *
 
 class Event:
     def __init__(self, player, equip):
@@ -40,16 +41,14 @@ class Event:
     def salle_vide(self, player, equip):
         os.system("cls")
         tprint("SALLE")
-        print(f"{player.name} trouve salle vide")
-        input()
-        os.system("cls")
+        Entree(f"Ouf ! {player.name} trouve une salle vide", '> ', True).run()
 
     def salle_coffre(self, player, equip):
         os.system("cls")
         tprint("SALLE")
         print("Vous avez trouvé un coffre !")
-        if input("Voulez-vous l'ouvrir ? (Oui/Non) - ").lower().startswith("o"):
-            print("Le coffre s'ouvre ...")
+        if Entree("Voulez-vous l'ouvrir ? (Oui/Non)", "> ").lower().startswith("o"):
+            print("\nLe coffre s'ouvre ...")
             sound_chest_o()
             time.sleep(2)
             """ Fonction qui retourne un item aléatoire parmi une arme, une armure ou de l'or """
@@ -60,43 +59,60 @@ class Event:
             item_choisi = choice(items)
             if item_choisi == item_1:
                 equip.ajouter_arme(player, item_choisi)
+                print(f"\nVous obtenez {item_choisi.name}")
             elif item_choisi == item_2:
                 equip.ajouter_armure(player, item_choisi)
+                print(f"\nVous obtenez {item_choisi.name}")
             elif item_choisi == item_3:
                 equip.ajouter_potion(player, item_choisi)
+                print(f"\nVous obtenez {item_choisi.name}")
             else:
                 quantite_or = random.randint(1, 10)
                 equip.ajouter_or(player, quantite_or)
             sound_item()
             time.sleep(2)
-            print("Vous fermez le coffre")
+            print("\nVous fermez le coffre\n")
             sound_chest_c()
             player.chests +=1
-            wait_input()
+            Entree("[italic]Appuyez sur entrée pour continuer ...[italic]","", True).run()
         else:
-            print("Vous n'avez pas ouvert ce coffre.")
-            wait_input()
+            Entree("Vous n'avez pas ouvert ce coffre.", "> ", True).run()
     
-    def salle_monstre(self, player, equip):
+    def salle_monstre(self, player, equip, niveau="base"):
         os.system("cls")
-        tprint("SALLE")
+        tprint("COMBAT")
         time.sleep(0.1)
         quit_pygame()
         sound_battle()
         print("%s rencontre %s" % (player.name, 'un ennemi !'))
-        if input("Veux tu te battre ou tenter de fuire? (Combat / Fuite)\n>").lower().startswith("c"):
-            player.status = "combat"
+        # while True:
+        #     os.system("cls")
+        #     tprint("COMBAT")
+        #     if Entree("Voulez-vous tenter de fuir? (Oui / Non)", "> ").run().lower().startswith("o"):
+        #         if randint(0, 1) == 0:
+        #             Entree("Vous arrivez à fuir !", "> ", True).run()
+        #             quit_pygame()
+        #             sound_bgm()
+        #             break
+        #         else:
+        #             Entree("Vous n'arrivez pas à fuir !", "> ", True).run()
+        #     else:
+        #         pass
+        player.status = "combat"
+        if niveau =="base":
             enemy = random_enemy()
-            battle = Combat(player, equip, enemy)
-            battle.battle(player, equip, enemy)
-        else :
-            print("vous fuyez !")
+        else:
+            enemy = random_boss()
+        battle = Combat(player, equip, enemy)
+        battle.battle(player, equip, enemy)
+            
+                
 
     def salle_magasin(self, player, equip):
         os.system("cls")
         tprint("SALLE")
         print("Il y a un marchand !")
-        choix=input("Rentrer dans le magasin ? (Oui/Non) - ")
+        choix=Entree("Rentrer dans le magasin ? (Oui/Non)", "> ")
         if choix.lower().startswith("o"):
             quit_pygame()
             print("Vous entrez dans le magasin")
@@ -113,82 +129,66 @@ class Event:
                 print("Bonjour aventurier quel bien vous ferez plaisir aujourd'hui ?")
             else:
                     print("C'est quelle heure pour acheter du materiel chef ?")
-
-            print("\n1 - Arme ⚔️ \n2 - Armure 🛡️ \n3 - Soin ❤️\n")
-            choix=input("Qu'est-ce qui vous intéresse ?")
+            choix=Entree("\n1. Arme ⚔️ \n2. Armure 🛡️ \n3. Soin ❤️\n\nQu'est-ce qui vous intéresse ?", "> ").run()
 
             #Arme
             if choix.lower().startswith("1"):
                 os.system("cls")
                 tprint("MARCHAND - ARMES")
-                print("1 - Epee en bois (10 or)\n2 - Epee en fer (20 or)\n3 - Epee en or (30 or)\n4 - Epee en diams (40 or)\n")
-                choix=input("Que voulez vous acheter  ? - ")
-                if choix.lower().startswith("1"):
-                    print("Vous avez acheté une epee en bois")
-                    #Verif que le player a assez de thune
-                    # retirer la thune
-                    # donner l'item
-                if choix.lower().startswith("2"):
-                    print("Vous avez acheté une epee en fer")
-                    #Verif que le player a assez de thune
-                    # retirer la thune
-                    # donner l'item
-                if choix.lower().startswith("3"):
-                    print("Vous avez acheté une epee en or")
-                    #Verif que le player a assez de thune
-                    # retirer la thune
-                    # donner l'item
-                if choix.lower().startswith("4"):
-                    print("Vous avez acheté une epee en diams")
-                    #Verif que le player a assez de thune
-                    # retirer la thune
-                    # donner l'item
+                ct = 0
+                print(f"Vous avez [yellow]{player.gold} or[yellow]")
+                for arme in armes_list:
+                    ct +=1
+                    print(f"{ct}. {arme.name} / + {arme.bonus} ATK / [yellow]{arme.price} or[yellow]\n")
+                if player.armes == []:
+                    choix =Entree(f"Que voulez vous acheter ? / (Actuellement vous n'avez pas d'arme)", "> ").run()
+                else:
+                    choix=Entree(f"Que voulez vous acheter ? / Actuellement vous avez {player.armes[0].name}", "> ").run()
+                try:
+                    choix = int(choix)
+                    choix = armes_list[choix-1]                    
+                    equip.achat(player, choix)
+                except (ValueError, IndexError):
+                    Entree("Vous n'avez rien acheté", "> ", True).run()
 
             #Armure
             elif choix.lower().startswith("2"):
                 os.system("cls")
                 tprint("MARCHAND - ARMURES")
-                print("1 - Armure en bois       10 or")
-                print("2 - Armure en fer       20 or")
-                print("3 - Armure en or       30 or")
-                print("4 - Armure en diams       40 or")
-                choix=input("Que voulez vous acheter  ? - ")
-                if choix.lower().startswith("1"):
-                    print("Vous avez acheté une Armure en bois")
-                    #Verif que le player a assez de thune
-                    # retirer la thune
-                    # donner l'item
-                elif choix.lower().startswith("2"):
-                    print("Vous avez acheté une Armure en fer")
-                    #Verif que le player a assez de thune
-                    # retirer la thune
-                    # donner l'item
-                elif choix.lower().startswith("3"):
-                    print("Vous avez acheté une Armure en or")
-                    #Verif que le player a assez de thune
-                    # retirer la thune
-                    # donner l'item
-                elif choix.lower().startswith("4"):
-                    print("Vous avez acheté une Armure en diams")
-                    #Verif que le player a assez de thune
-                    # retirer la thune
-                    # donner l'item
+                ct = 0
+                print(f"Vous avez [yellow]{player.gold} or[yellow]")
+                for armure in armures_list:
+                    ct+=1
+                    print(f"{ct}. {armure.name} / + {armure.bonus} ATK / [yellow]{armure.price} or[yellow]\n")
+                choix=Entree("Que voulez vous acheter ?", "> ").run()
+                try:
+                    choix = int(choix)
+                    choix = armures_list[choix-1]                    
+                    equip.achat(player, choix)
+                except (ValueError, IndexError):
+                    Entree("Vous n'avez rien acheté", "> ", True).run()
 
             #Soins
             else:
                 os.system("cls")
                 tprint("MARCHAND - SOINS")
-                print("1 - Potion de soin       10 or")
-                choix=input("Que voulez vous acheter  ? - ")
-
-                if choix.lower().startswith("1"):
-                    print("Vous avez acheté une Potion de soin")
-                    #Verif que le player a assez de thune
-                    # retirer la thune
-                    # donner l'item
+                ct = 0
+                print(f"Vous avez [yellow]{player.gold} or[yellow]")
+                for potion in potions_list:
+                    ct+=1
+                    print(f"{ct}. {potion.name} / + {potion.bonus} ATK / [yellow]{potion.price} or[yellow]\n")
+                if player.armures == []:
+                    choix =Entree(f"Que voulez vous acheter ? / (Actuellement vous n'avez pas d'armure)", "> ").run()
+                else:
+                    choix=Entree(f"Que voulez vous acheter ? / Actuellement vous avez {player.armures[0].name}", "> ").run()
+                try:
+                    choix = int(choix)
+                    choix = potions_list[choix-1]                    
+                    equip.achat(player, choix)
+                except (ValueError, IndexError):
+                    Entree("Vous n'avez rien acheté", "> ", True).run()
+            
             quit_pygame()
-            sound_item()
-            time.sleep(4)
             sound_bgm()
         else:
             var_2 = randint(1, 1000)
@@ -201,7 +201,6 @@ class Event:
                 print("Le marchant vous souhaite une bonne journée !")
             elif var_2 == 1:
                 print("Oh le rat")
-        wait_input()
         os.system("cls")
 
     def salle_piege(self, player, equip):
@@ -224,9 +223,15 @@ class Event:
     def salle_couloir(self, player, equip):
         os.system("cls")
         tprint("SALLE")
-        print(f"{player.name} trouve salle couloir")
-        input()
-        os.system("cls")
+        Entree(f"{player.name} avance dans un couloir très étroit", "> ").run()
+        a = randint(0, 10)
+        if a  <=6 :
+            Entree("Il y a un boss !", "> ", True).run()
+            Event(player, equip).salle_monstre(player, equip, "boss")
+        elif a > 6 and a < 8 :
+            Event(player, equip).salle_coffre(player, equip)
+        else : 
+            Event(player, equip).salle_magasin
 
     def _weighted_choice(self, list, prob):
         """Choix pondéré d'un évenement
