@@ -48,11 +48,11 @@ class Event:
         tprint("SALLE")
         print("Vous avez trouvé un coffre !")
         if Entree("Voulez-vous l'ouvrir ? (Oui/Non)", "> ").lower().startswith("o"):
+            sound_chest_o()
             print("\nLe coffre s'ouvre")
             for i in range(0, 3):
-                time.sleep(1)
+                time.sleep(0.5)
                 print(".")
-            sound_chest_o()
             time.sleep(2)
             """ Fonction qui retourne un item aléatoire parmi une arme, une armure ou de l'or """
             item_1 = random_arme()
@@ -172,14 +172,14 @@ class Event:
                 os.system("cls")
                 tprint("MARCHAND - ARMES")
                 ct = 0
-                print(f"Vous avez [yellow]{player.gold} or[yellow]")
+                print(f"Vous avez [yellow]{player.gold} or[yellow]\n")
                 for arme in armes_list:
                     ct +=1
                     print(f"{ct}. {arme.name} / + {arme.bonus} ATK / [yellow]{arme.price} or[yellow]\n")
                 if player.armes == []:
                     choix =Entree(f"Que voulez vous acheter ? / (Actuellement vous n'avez pas d'arme)", "> ").run()
                 else:
-                    choix=Entree(f"Que voulez vous acheter ? / Actuellement vous avez {player.armes[0].name}", "> ").run()
+                    choix=Entree(f"Que voulez vous acheter ? / Actuellement vous avez [purple]{player.armes[0].name}[purple]", "> ").run()
                 try:
                     choix = int(choix)
                     choix = armes_list[choix-1]                    
@@ -196,6 +196,10 @@ class Event:
                 for armure in armures_list:
                     ct+=1
                     print(f"{ct}. {armure.name} / + {armure.bonus} ATK / [yellow]{armure.price} or[yellow]\n")
+                if player.armures == []:
+                    choix =Entree(f"Que voulez vous acheter ? / (Actuellement vous n'avez pas d'armure)", "> ").run()
+                else:
+                    choix=Entree(f"Que voulez vous acheter ? / Actuellement vous avez {player.armures[0].name}", "> ").run()
                 choix=Entree("Que voulez vous acheter ?", "> ").run()
                 try:
                     choix = int(choix)
@@ -212,11 +216,7 @@ class Event:
                 print(f"Vous avez [yellow]{player.gold} or[yellow]")
                 for potion in potions_list:
                     ct+=1
-                    print(f"{ct}. {potion.name} / + {potion.bonus} ATK / [yellow]{potion.price} or[yellow]\n")
-                if player.armures == []:
-                    choix =Entree(f"Que voulez vous acheter ? / (Actuellement vous n'avez pas d'armure)", "> ").run()
-                else:
-                    choix=Entree(f"Que voulez vous acheter ? / Actuellement vous avez {player.armures[0].name}", "> ").run()
+                    print(f"{ct}. {potion.name} / + {potion.bonus} ATK / [yellow]{potion.price} or[yellow]\n")  
                 try:
                     choix = int(choix)
                     choix = potions_list[choix-1]                    
@@ -259,7 +259,10 @@ class Event:
     def salle_couloir(self, player, equip):
         os.system("cls")
         tprint("SALLE")
-        Entree(f"{player.name} avance dans un couloir très étroit", "> ").run()
+        print(f"{player.name} avance dans un couloir très étroit")
+        for i in range(0, 3):
+            time.sleep(1)
+            print(".")
         a = randint(0, 10)
         if a  <=6 :
             Entree("Il y a un boss !", "> ", True).run()
