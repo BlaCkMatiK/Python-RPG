@@ -1,10 +1,10 @@
-from evenement import *
+from events import *
 from caracter import Character
 from sounds import *
 from art import *
 from random import choice
 from screen import *
-from inventaire import *
+from inventory import *
 import math
 
 class Combat:
@@ -40,15 +40,13 @@ class Combat:
                     time.sleep(2)
                     print("********\n")
                     enemy.attack(player)
-                    wait_input_turn()
                 else:
                     enemy.attack(player)
                     time.sleep(2)
                     print("********\n")
                     player.attack(enemy)
-                    wait_input_turn()
+                Entree("[italic]Appuyez sur Entrée pour passer au tour suivant ...[italic]", "", True).run()
                 player.status = "normal"
-                os.system("cls")
                 tour += 1      
             if player.is_alive():
                 quit_pygame()
@@ -56,28 +54,28 @@ class Combat:
                 sound_win_fight()
                 tprint("COMBAT - VICTOIRE!")
                 print(f"[green]Vous avez gagné ce combat ![green]")                
-                Entree("...","", False).run()
+                Entree("[italic]Appuyez sur Entrée pour continuer ...[italic]","", False).run()
                 quantite_or = randint(1, 5)
                 if player.type == "Thief":
                     print("[yellow](Bonus : Roublardise du voleur ! Or x2)[yellow]")
                     quantite_or *=2.5
                     quantite_or = math.ceil(quantite_or)
                 equip.ajouter_or(player, quantite_or)
-                Entree("...","", False).run()
+                Entree("[italic]Appuyez sur Entrée pour continuer ...[italic]","", False).run()
                 if tour == 0 :
                     player.OHKO +=1
                     time.sleep(0.1)
                     sound_OHKO()
                     print(f"[red]C'est un one-shot ![red]")
-                    Entree("...","").run()
+                    Entree("[italic]Appuyez sur Entrée pour continuer ...[italic]","").run()
                 else :
                     print(f"Combat terminé en {tour+2} tours !")
-                    Entree("...","", False).run()               
+                    Entree("[italic]Appuyez sur Entrée pour continuer ...[italic]","", False).run()               
                 xp = randint(3,10)
                 equip.ajouter_xp(player, xp)
                 player.vitesse = player.vitesse_T
                 player.kills +=1
-                Entree("...", "", True).run()
+                Entree("[italic]Appuyez sur Entrée pour continuer ...[italic]", "", True).run()
                 if tour > player.tours_max:
                     player.tours_max = tour
                 quit_pygame()    

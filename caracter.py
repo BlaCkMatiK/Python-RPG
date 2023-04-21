@@ -143,7 +143,7 @@ class Character:
     def stats_final(self):
         arme_bonus = self.armes[0].bonus if len(self.armes) > 0 else 0
         armure_bonus = self.armures[0].bonus if len(self.armures) > 0 else 0
-        return (f"Stats actuelles : {self.health} ❤️ / {self.attack_value} ⚔️ / {self.defense_value} 🛡️ / {self.vitesse} ⚡️\n\nStats de classe : {self.classe_health} ❤️ / {self.classe_attack} ⚔️ / {self.classe_defense} 🛡️ / {self.classe_vitesse} ⚡️\nAméliorations   : {self.carac_health} ❤️ / {self.carac_attack} ⚔️ / {self.carac_defense} 🛡️ / {self.carac_vitesse} ⚡️\nEquipement      : Ø ❤️ / {arme_bonus} ⚔️ / {armure_bonus} 🛡️ / Ø ⚡️\n")
+        return (f"Stats actuelles : {self.health} ❤️ / {self.attack_value+arme_bonus} ⚔️ / {self.defense_value+armure_bonus} 🛡️ / {self.vitesse} ⚡️\n\nStats de classe : {self.classe_health} ❤️ / {self.classe_attack} ⚔️ / {self.classe_defense} 🛡️ / {self.classe_vitesse} ⚡️\nAméliorations   : {self.carac_health} ❤️ / {self.carac_attack} ⚔️ / {self.carac_defense} 🛡️ / {self.carac_vitesse} ⚡️\nEquipement      : Ø ❤️ / {arme_bonus} ⚔️ / {armure_bonus} 🛡️ / Ø ⚡️\n")
 
     def stats(self):
         os.system("cls")
@@ -195,7 +195,7 @@ class Thief(Character):
         super().__init__(18, 8, 6, 10, a_dice)
 
     def bonus_classe_print(self):
-        return f"[yellow](Bonus : x2,5 or (arrondi au sup.) par combat !)[yellow]"
+        return f"[#3498DB](Bonus : x2,5 or (arrondi au sup.) par combat !)[#3498DB]"
     
     def bonus_arme_print(self):
         return f"Cette classe utilise des dagues"
@@ -218,7 +218,6 @@ def create_character():
     tprint("CREATION DE PERSONNAGE")
     name = Entree("Le nom de votre personnage ?","> ", True).run()
     #valid_inputs = ["1", "2", "3", "4"]
-    os.system("cls")
     
     while True:
         try:
@@ -233,7 +232,7 @@ def create_character():
 
             # Loop until a valid integer is entered
             while True:
-                classe_choix_str = input("> ")
+                classe_choix_str = Entree("Saisissez le numéro associé a la classe...", "> ").run()
                 if classe_choix_str.isdigit():
                     classe_choix = int(classe_choix_str)
                     if 1 <= classe_choix <= len(classes):
@@ -258,7 +257,7 @@ def create_character():
 
         while p_caracteristiques > 0:
             print("Statistiques actuelles : \n" + character.stats_print_carac())
-            print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer :[italic]")
+            print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer : (Entre 0 pour passer à la statistique suivante)[italic]\n")
 
             # Request input for HP points
             max_hp_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
@@ -283,7 +282,7 @@ def create_character():
                 max_atk_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
                 while True:
                     try:
-                        n_atk = int(Entree(f"Combien de points d'ATK ⚔️ ? (maximum {max_atk_points}): ", "> ").run())
+                        n_atk = int(Entree(f"\nCombien de points d'ATK ⚔️ ? (maximum {max_atk_points}): ", "> ").run())
                         if 0 <= n_atk <= max_atk_points:
                             break
                         else:
@@ -301,7 +300,7 @@ def create_character():
                 max_def_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
                 while True:
                     try:
-                        n_def = int(Entree(f"Combien de points de DEF 🛡️ ? (maximum {max_def_points}): ", "> ").run())
+                        n_def = int(Entree(f"\nCombien de points de DEF 🛡️ ? (maximum {max_def_points}): ", "> ").run())
                         if 0 <= n_def <= max_def_points:
                             break
                         else:

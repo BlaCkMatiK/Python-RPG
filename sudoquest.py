@@ -39,7 +39,7 @@ def main():
     quit_pygame()
     sound_enter()
     time.sleep(10)
-    os.system("cls")
+    Entree("[italic]Appuyez sur Entrée pour continuer ...[italic]", "", True).run()
     sound_bgm()
     #stats(player)
     while player_b.is_alive():

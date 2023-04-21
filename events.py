@@ -2,10 +2,9 @@ import random
 
 from caracter import *
 from screen import *
-from inventaire import *
-from combat import Combat
+from inventory import *
+from fight import Combat
 from items import *
-from inventaire import *
 
 class Event:
     def __init__(self, player, equip):
@@ -160,15 +159,14 @@ class Event:
                 os.system("cls")
                 tprint("MARCHAND - ARMURES")
                 ct = 0
-                print(f"Vous avez [yellow]{player.gold} or[yellow]")
+                print(f"Vous avez [yellow]{player.gold} or[yellow]\n    ")
                 for armure in armures_list:
                     ct+=1
-                    print(f"{ct}. {armure.name} / + {armure.bonus} ATK / [yellow]{armure.price} or[yellow]\n")
+                    print(f"{ct}. {armure.name} / + {armure.bonus} DEF / [yellow]{armure.price} or[yellow]\n")
                 if player.armures == []:
                     choix =Entree(f"Que voulez vous acheter ? / (Actuellement vous n'avez pas d'armure)", "> ").run()
                 else:
                     choix=Entree(f"Que voulez vous acheter ? / Actuellement vous avez {player.armures[0].name}", "> ").run()
-                choix=Entree("Que voulez vous acheter ?", "> ").run()
                 try:
                     choix = int(choix)
                     choix = armures_list[choix-1]                    
@@ -184,7 +182,8 @@ class Event:
                 print(f"Vous avez [yellow]{player.gold} or[yellow]")
                 for potion in potions_list:
                     ct+=1
-                    print(f"{ct}. {potion.name} / + {potion.bonus} ATK / [yellow]{potion.price} or[yellow]\n")  
+                    print(f"{ct}. {potion.name} / + {potion.bonus} HP / [yellow]{potion.price} or[yellow]\n")
+                choix=Entree("Que voulez vous acheter ?", "> ").run()
                 try:
                     choix = int(choix)
                     choix = potions_list[choix-1]                    
@@ -203,7 +202,7 @@ class Event:
                 print("Bonne journée en esperant vous revoir au plus vite")
             elif var_2 >= 601 and var_2 <= 999:
                 print("Le marchant vous souhaite une bonne journée !")
-            elif var_2 == 1:
+            elif var_2 == 1000:
                 print("Oh le rat")
         Entree("\n[italic]Appuez sur entrée pour continuer ... [italic]", "", True).run()
 
@@ -219,8 +218,8 @@ class Event:
         sound_trap()
         time.sleep(1)
         trap = randint(1,2)
-        Entree(f"Vous avez perdu {trap*2} HP ❤️ ", "> ", True)
-        player.health -= 2
+        Entree(f"Vous avez perdu {(trap*2)} HP ❤️ ", "> ", True).run()
+        player.health -= trap*2
         player.traps +=1
     
     def salle_couloir(self, player, equip):

@@ -27,7 +27,7 @@ class Sceptre(Arme):
         self.classe = classe
 
 class Dague(Arme):
-    def __init__(self, name, price, bonus, classe = "Thief"):
+    def __init__(self, name, price, bonus, classe = "Voleur"):
         super().__init__(name, price, bonus, associated_player=None)
         self.classe = classe
 
