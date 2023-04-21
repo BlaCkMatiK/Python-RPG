@@ -6,7 +6,7 @@ from random import *
 from screen import Entree
 from sounds import *
 from art import *
-from inventaire import *
+from inventory import *
 
 from dice import Dice, RiggedDice
 

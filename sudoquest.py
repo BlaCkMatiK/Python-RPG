@@ -3,13 +3,13 @@ import time
 
 from caracter import create_character
 from dice import Dice
-from evenement import *
+from events import *
 from screen import *
 import signal
 from sounds import *
 
-from commandes import Commandes
-from inventaire import Inventaire
+from commands import Commandes
+from inventory import Inventaire
 
 def handle_signal(signal_num, frame):
     os.system("cls")
