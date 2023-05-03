@@ -15,73 +15,76 @@ class Inventaire(object):
     
     def ajouter_caracteristique(self, player, p_caracteristiques):
         while p_caracteristiques > 0:
-            print(f"Vous avez obtenu {p_caracteristiques} points de caractéristiques !")
-            print(f"Statistiques actuelles :\n(ATK : {player.attack_value} ⚔️ / DEF : {player.defense_value}🛡️ / VIT : {player.vitesse}⚡️)\n")
-            print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer :[italic]")
+            print("Statistiques actuelles : \n" + player.stats_print_carac())
+            print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer : (Entre 0 pour passer à la statistique suivante)[italic]\n")
 
-            max_hp_points = min(p_caracteristiques, 10)
+            # Request input for HP points
+            max_hp_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
             while True:
                 try:
-                    n_hp = int(Entree(f"\nCombien de points d'HP ? (maximum {max_hp_points}): ", "> ").run())
+                    n_hp = int(Entree(f"\nCombien de points d'HP ❤️ ? (maximum {max_hp_points}): ", "> " ).run())
                     if 0 <= n_hp <= max_hp_points:
                         break
                     else:
-                        print(f"Entrez une valeur entre 0 et {max_hp_points}")
+                        print(f"[italic][red]Entrez une valeur entre 0 et {max_hp_points}[red][italic]")
                 except ValueError:
                     os.system("cls")
-                    print("Entrez un nombre entier valide")
+                    print("[italic][red]Entrez un nombre entier valide[red][italic]")
 
-                player.max_health += n_hp
-                player.health += n_hp
-                player.carac_health += n_hp
-                p_caracteristiques -= n_hp
+            player.max_health += n_hp
+            player.carac_health += n_hp
+            player.regenerate()
+            p_caracteristiques -= n_hp
 
             if p_caracteristiques > 0:
-                max_atk_points = min(p_caracteristiques, 10)
+                # Request input for ATK points
+                max_atk_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
                 while True:
                     try:
-                        n_atk = int(Entree(f"Combien de points d'ATK ? (maximum {max_atk_points}): ", "> ").run())
+                        n_atk = int(Entree(f"\nCombien de points d'ATK ⚔️ ? (maximum {max_atk_points}): ", "> ").run())
                         if 0 <= n_atk <= max_atk_points:
                             break
                         else:
-                            print(f"Entrez une valeur entre 0 et {max_atk_points}")
+                            print(f"[italic][red]Entrez une valeur entre 0 et {max_atk_points}[red][italic]")
                     except ValueError:
                         os.system("cls")
-                        print("Entrez un nombre entier valide")
+                        print("[italic][red]Entrez un nombre entier valide[red][italic]")
 
-                    player.attack_value += n_atk
-                    player.carac_attack += n_hp
-                    p_caracteristiques -= n_atk
+                player.attack_value += n_atk
+                player.carac_attack += n_atk
+                p_caracteristiques -= n_atk
 
             if p_caracteristiques > 0:
-                max_def_points = min(p_caracteristiques, 10)
+                # Request input for DEF points
+                max_def_points = min(p_caracteristiques, 10)  # Set maximum number of points to 10 or remaining points
                 while True:
                     try:
-                        n_def = int(Entree(f"Combien de points de DEF ? (maximum {max_def_points}): ", "> ").run())
+                        n_def = int(Entree(f"\nCombien de points de DEF 🛡️ ? (maximum {max_def_points}): ", "> ").run())
                         if 0 <= n_def <= max_def_points:
                             break
                         else:
-                            print(f"Entrez une valeur entre 0 et {max_def_points}")
+                            print(f"[italic][red]Entrez une valeur entre 0 et {max_def_points}[red][italic]")
                     except ValueError:
                         os.system("cls")
-                        print("Entrez un nombre entier valide")
+                        print("[italic][red]Entrez un nombre entier valide[red][italic]")
 
-                    player.defense_value += n_def
-                    player.carac_defense += n_hp
-                    p_caracteristiques -= n_def
+                player.defense_value += n_def
+                player.carac_defense += n_def
+                p_caracteristiques -= n_def
+            os.system("cls")
 
     def ajouter_xp(self, player, xp):
         level_t=0
         player.p_experience += xp
         print(f"[blue]{player.name} a obtenu {xp} points d'expérience ! [blue]")
+        Entree("", ">").run()
+        sound_level_up()
         while player.p_experience >= 10:
             player.level += 1
             level_t +=1
             player.p_experience -= 10
-            Entree("", ">", False).run()
-            sound_level_up()
-            tprint("LEVEL UP !")
-            print(f"[blue]{player.name} a atteint le niveau {player.level} ![blue]")
+        tprint("LEVEL UP !")
+        print(f"[blue]{player.name} a atteint le niveau {player.level} ![blue]")
 
         self.ajouter_caracteristique(player, level_t)
 

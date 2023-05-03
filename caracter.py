@@ -248,14 +248,13 @@ def create_character():
             tprint("CREATION DE PERSONNAGE")
             os.system("cls")
             print(f"[italic][red]Veuillez saisir une valeur entre 1 et 3 ![red][italic]\n")
-    
-        os.system("cls")
-        tprint("CREATION DE PERSONNAGE")
-        print("Bonjour " + Character.get_name(character) + " le " + Character.get_type(character) + "!\n")
-    
+        
         p_caracteristiques=10
 
         while p_caracteristiques > 0:
+            os.system("cls")
+            tprint("STATS DE PERSONNAGE")
+            print("Bonjour " + Character.get_name(character) + " le " + Character.get_type(character) + "!\n")
             print("Statistiques actuelles : \n" + character.stats_print_carac())
             print(f"[italic]Vous avez {p_caracteristiques} points de caractéristique à attribuer : (Entre 0 pour passer à la statistique suivante)[italic]\n")
 
@@ -312,10 +311,10 @@ def create_character():
                 character.defense_value += n_def
                 character.carac_defense += n_def
                 p_caracteristiques -= n_def
-            os.system("cls")
-            tprint("DESCENTE")
-            print(character)
-            print("%s entre dans une cave sombre, à la recherche de l'aventure..." % character.name)
+        os.system("cls")
+        tprint("DESCENTE")
+        print(character)
+        print("%s entre dans une cave sombre, à la recherche de l'aventure..." % character.name)
 
         return character
 
