@@ -230,7 +230,7 @@ class Event:
             time.sleep(1)
             print(".")
         a = randint(0, 10)
-        if a  <=6 :
+        if a <=6 and player.level >= 10 :
             Entree("Il y a un boss !", "> ", True).run()
             Event(player, equip).salle_monstre(player, equip, "boss")
         elif a > 6 and a < 8 :

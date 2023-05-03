@@ -31,10 +31,10 @@ class Inventaire(object):
                     os.system("cls")
                     print("Entrez un nombre entier valide")
 
-            player.max_health += n_hp
-            player.health += n_hp
-            player.carac_health += n_hp
-            p_caracteristiques -= n_hp
+                player.max_health += n_hp
+                player.health += n_hp
+                player.carac_health += n_hp
+                p_caracteristiques -= n_hp
 
             if p_caracteristiques > 0:
                 max_atk_points = min(p_caracteristiques, 10)
@@ -49,9 +49,9 @@ class Inventaire(object):
                         os.system("cls")
                         print("Entrez un nombre entier valide")
 
-            player.attack_value += n_atk
-            player.carac_attack += n_hp
-            p_caracteristiques -= n_atk
+                    player.attack_value += n_atk
+                    player.carac_attack += n_hp
+                    p_caracteristiques -= n_atk
 
             if p_caracteristiques > 0:
                 max_def_points = min(p_caracteristiques, 10)
@@ -66,9 +66,9 @@ class Inventaire(object):
                         os.system("cls")
                         print("Entrez un nombre entier valide")
 
-            player.defense_value += n_def
-            player.carac_defense += n_hp
-            p_caracteristiques -= n_def
+                    player.defense_value += n_def
+                    player.carac_defense += n_hp
+                    p_caracteristiques -= n_def
 
     def ajouter_xp(self, player, xp):
         level_t=0
