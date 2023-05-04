@@ -155,7 +155,7 @@ class Character:
         Entree("[italic]Appuez sur entrée pour continuer ... [italic]", "", True).run()
 
 class Warrior(Character):
-    type = "Warrior"
+    type = "Warrior ⚔️"
     def __init__(self):
         super().__init__(20, 8, 6, 5, a_dice)
     
@@ -170,7 +170,7 @@ class Warrior(Character):
         return f"Cette classe utilise des épées"
 
 class Mage(Character):
-    type = "Mage"
+    type = "Mage 🧙"
 
     def __init__(self):
         super().__init__(17, 6, 9, 7, a_dice)
@@ -190,7 +190,7 @@ class Mage(Character):
         return f"Cette classe utilise des sceptres"
 
 class Thief(Character):
-    type = "Voleur"
+    type = "Voleur 🗡️"
     def __init__(self):
         super().__init__(18, 8, 6, 10, a_dice)
 
