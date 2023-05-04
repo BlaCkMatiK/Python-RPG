@@ -32,8 +32,8 @@ class Inventaire(object):
                     print("[italic][red]Entrez un nombre entier valide[red][italic]")
 
             player.max_health += n_hp
+            player.health += n_hp
             player.carac_health += n_hp
-            player.regenerate()
             p_caracteristiques -= n_hp
 
             if p_caracteristiques > 0:
@@ -77,16 +77,16 @@ class Inventaire(object):
         level_t=0
         player.p_experience += xp
         print(f"[blue]{player.name} a obtenu {xp} points d'expérience ! [blue]")
-        Entree("", ">").run()
-        sound_level_up()
+        Entree("", ">", True).run()
         while player.p_experience >= 10:
             player.level += 1
             level_t +=1
             player.p_experience -= 10
-        tprint("LEVEL UP !")
-        print(f"[blue]{player.name} a atteint le niveau {player.level} ![blue]")
-
-        self.ajouter_caracteristique(player, level_t)
+        if level_t>0:
+            sound_level_up()
+            tprint("LEVEL UP !")
+            print(f"[blue]{player.name} a atteint le niveau {player.level} ![blue]")
+            self.ajouter_caracteristique(player, level_t)
 
     def ajouter_potion(self, player, potion):
         sound_item()
