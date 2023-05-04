@@ -11,6 +11,8 @@ from sounds import *
 from commands import Commandes
 from inventory import Inventaire
 
+from leaderboard import send_to_leaderboard
+
 def handle_signal(signal_num, frame):
     os.system("cls")
     print(
@@ -46,8 +48,10 @@ def main():
         action = Commandes(player_b, stuff)
         action.choix(player_b, stuff)
     #over()
-    print_game_over()
-    end_stats(player_b)
+    #print_game_over()
+    #end_stats(player_b)
+    send_to_leaderboard(player_b)
+    replay(player_b)
     main()
 
 

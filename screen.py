@@ -73,7 +73,12 @@ def end_stats(self):
     tprint("GAME OVER")
     Entree(f"[italic]Appuyez sur Entrée pour continuer ...[italic]", "").run()
     print(f"STATISTIQUES DE LA PARTIE DE {self.name} :\n")
-    if Entree(f"\n\nVous avez vaincu {self.kills} ennemis !\nVotre plus long combat à duré {self.tours_max} tours !\nVous avez one-tap {self.OHKO} ennemis !\nVottre plus grosse attaque était de {self.max_dmg} !\nVous avez ouvert {self.chests} coffres !\nVous avez accumulé {self.gold} or !\nVous avez visité {self.steps} salles !\nVous êtes tombé dans {self.traps} pièges !\n\nRejouer ? (Oui / Non)", "> ", True).run().lower().startswith("o"):
+    Entree(f"\n\nVous avez vaincu {self.kills} ennemis !\nVotre plus long combat à duré {self.tours_max} tours !\nVous avez one-tap {self.OHKO} ennemis !\nVottre plus grosse attaque était de {self.max_dmg} !\nVous avez ouvert {self.chests} coffres !\nVous avez accumulé {self.gold} or !\nVous avez visité {self.steps} salles !\nVous êtes tombé dans {self.traps} pièges !\n", "> ").run()
+    
+def replay(self):
+    os.system("cls")
+    tprint("REJOUER ?")
+    if Entree(f"\nRejouer ? (Oui / Non)", "> ", True).run().lower().startswith("o"):
         self.potions = []
         self.armes = []
         self.armures=[]
@@ -81,6 +86,7 @@ def end_stats(self):
         self.health = 0
         self.attack = 0
         self.defense = 0
+        sound_create()
     else :
         time.sleep(1)
         exit(0)

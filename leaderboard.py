@@ -1,29 +1,45 @@
-import pymysql
+import requests
+from requests.exceptions import RequestException
+from screen import Entree
 
-# Connect to the database
-connection = pymysql.connect(
-    host='93.29.76.28',
-    user='sudoquest',
-    password='ccc455a76c8435cb3085632a83cfeb83792536f894d53593294f4048f9cdf198',
-    db='sudoquest',
-    charset='utf8mb4',
-    cursorclass=pymysql.cursors.DictCursor
-)
+def send_to_leaderboard(player):
 
-# Insert a new score
-with connection.cursor() as cursor:
-    sql = "INSERT INTO scores (player_name, score) VALUES (%s, %s)"
-    cursor.execute(sql, ('Alice', 100))
-connection.commit()
-
-# Retrieve the top 10 scores
-with connection.cursor() as cursor:
-    sql = "SELECT player_name, score FROM scores ORDER BY score DESC LIMIT 10"
-    cursor.execute(sql)
-    rows = cursor.fetchall()
-
-# Format the scores as HTML
-table_html = "<table>"
-for row in rows:
-    table_html += "<tr><td>{}</td><td>{}</td></tr>".format(row['player_name'], row['score'])
-table_html += "</table>"
+    level = player.level
+    classe = player.type
+    steps = player.steps
+    kills = player.kills
+    
+    #print("\nLe Leaderboard peut être consulté à l'adresse : https://sudo-su.fr/sudoquest/lead.php !")
+    if Entree("\nEnvoyer le score dans le leaderboard ? (Oui/Non) (Consultable à https://sudo-su.fr/sudoquest/lead.php )", "> ").run().lower().startswith("o"):
+        name = Entree("\nQuel est votre nom de joueur ?", "> ").run()
+        data = {'player_name': name}
+        url = 'http://sudo-su.fr:5000/receive_score'
+        response = requests.post(url, data=data)
+        
+        if 'present' in response.text:
+            Entree("\aAh ! Un score a déjà été enregistré pour ce joueur.\n[italic]Appuyez sur Entrée pour continuer ...[italic]", "").run()
+            while True:
+                #a = input("Voulez vous modifier ce score ? (o/n)")
+                if Entree("Voulez vous modifier ce score ? (Oui/Non) \n[bold][red]Attention ! Le score précédent sera écrasé ![red][bold]", "> ").run().lower().startswith("o"):
+                    p = Entree("\nEntrez votre Passphrase", "> ").run()
+                    url = "http://sudo-su.fr:5000/update_score"
+                    data = {"player_name":name, "level":level, "passphrase": p, "class":classe, "steps":steps, "kills":kills}
+                    response = requests.post(url, data=data)
+                    if response.status_code == 200:
+                        Entree(response.text, "").run()
+                        break
+                    else:
+                        Entree(response.text, "").run()
+                else :
+                    break
+        else:
+            Entree("\nAucun score associé à ce nom de joueur !\n[italic]Appuyez sur Entrée pour continuer ...[italic]", "").run()
+            p = Entree("\nDéfinissez une Passphrase (Utilisée pour modifier vos prochains meilleurs scores)", "> ").run()
+            url = 'http://sudo-su.fr:5000/insert_score'
+            data = {"player_name":name, "level":level, "passphrase": p, "class":classe, "steps":steps, "kills":kills}
+            response = requests.post(url, data=data)
+            Entree(response.text, "").run()
+        #print("\nLe Leaderboard peut être consulté à l'adresse : https://sudo-su.fr/sudoquest/lead.php !")
+    else:
+        pass
+        #print(f"\nDésolé, une erreur est survenue dans l'envoi de votre score :", response.text)
