@@ -72,6 +72,7 @@ class Commandes:
         Entree("\n[italic][green]Bonne chance ![green]\nAppuyez sur Entrée pour continuer ...[italic]", "", True).run()
 
     def explore(self, player, equip):
+        player.steps +=1
         avance = Event(player, equip)
         avance.explore(player, equip)
     
